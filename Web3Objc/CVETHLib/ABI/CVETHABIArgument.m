@@ -9,6 +9,7 @@
 #import "CVETHABIArgument.h"
 #import "NSString+CVETH.h"
 #import "NSData+CVETH.h"
+#import "BigNumber.h"
 
 @implementation CVETHABIArgument
 /**
@@ -110,7 +111,8 @@ encode to bytes
  */
 +(NSString *)toInt:(NSString *)_resultArg
 {
-    return [_resultArg decFromHex];
+//    return [_resultArg decFromHex];
+    return [BigNumber bigNumberWithHexString:[_resultArg addPrefix0x]].decimalString;
 }
 +(NSString *)toAddress:(NSString *)_resultArg
 {

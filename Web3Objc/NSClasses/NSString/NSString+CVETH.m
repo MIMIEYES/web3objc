@@ -12,6 +12,7 @@
 #import "NSMutableData+CVETH.h"
 #import "TrezorCrypto.h"
 #import "ccMemory.h"
+#import "BigNumber.h"
 
 static const UniChar base58chars[] = {
   '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P',
@@ -60,64 +61,66 @@ static const int8_t base58map[] = {
 }
 -(NSString *)decFromHex
 {
-    return [NSNumberFormatter
-            localizedStringFromNumber:[self decimalNumberFromHexStr]
-            numberStyle:NSNumberFormatterNoStyle];
+//    return [NSNumberFormatter
+//            localizedStringFromNumber:[self decimalNumberFromHexStr]
+//            numberStyle:NSNumberFormatterNoStyle];
+    return [BigNumber bigNumberWithHexString:[self addPrefix0x]].decimalString;
 }
 -(NSString *)hexFromDec
 {
-    NSString *decStr = [self stringByReplacingOccurrencesOfString:@"," withString:@""];
-    NSString *result = @"";
-    NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithString:decStr];
-    NSDecimalNumber *modNum = [NSDecimalNumber decimalNumberWithString:@"16"];
-    
-    while (![[NSNumberFormatter localizedStringFromNumber:decNum numberStyle:NSNumberFormatterNoStyle] isEqualToString:@"0"]) {
-        NSDecimalNumber *remineNum = [decNum decimalNumberByModBy:modNum];
-        NSString *remine = [NSNumberFormatter
-                            localizedStringFromNumber:remineNum
-                            numberStyle:NSNumberFormatterNoStyle];
-        decNum = [decNum decimalNumberByDividingBy:modNum withBehavior:[NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:0 raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO]];
-        if ([remine isEqualToString:@"10"]) {
-            remine = @"a";
-        } else if ([remine isEqualToString:@"11"]) {
-            remine = @"b";
-        } else if ([remine isEqualToString:@"12"]) {
-            remine = @"c";
-        } else if ([remine isEqualToString:@"13"]) {
-            remine = @"d";
-        } else if ([remine isEqualToString:@"14"]) {
-            remine = @"e";
-        } else if ([remine isEqualToString:@"15"]) {
-            remine = @"f";
-        }
-        result = [NSString stringWithFormat:@"%@%@", remine, result];
-    }
-    return [NSString stringWithFormat:@"%@", result];
+    return [BigNumber bigNumberWithDecimalString:self].hexString;
+//    NSString *decStr = [self stringByReplacingOccurrencesOfString:@"," withString:@""];
+//    NSString *result = @"";
+//    NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithString:decStr];
+//    NSDecimalNumber *modNum = [NSDecimalNumber decimalNumberWithString:@"16"];
+//
+//    while (![[NSNumberFormatter localizedStringFromNumber:decNum numberStyle:NSNumberFormatterNoStyle] isEqualToString:@"0"]) {
+//        NSDecimalNumber *remineNum = [decNum decimalNumberByModBy:modNum];
+//        NSString *remine = [NSNumberFormatter
+//                            localizedStringFromNumber:remineNum
+//                            numberStyle:NSNumberFormatterNoStyle];
+//        decNum = [decNum decimalNumberByDividingBy:modNum withBehavior:[NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:0 raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO]];
+//        if ([remine isEqualToString:@"10"]) {
+//            remine = @"a";
+//        } else if ([remine isEqualToString:@"11"]) {
+//            remine = @"b";
+//        } else if ([remine isEqualToString:@"12"]) {
+//            remine = @"c";
+//        } else if ([remine isEqualToString:@"13"]) {
+//            remine = @"d";
+//        } else if ([remine isEqualToString:@"14"]) {
+//            remine = @"e";
+//        } else if ([remine isEqualToString:@"15"]) {
+//            remine = @"f";
+//        }
+//        result = [NSString stringWithFormat:@"%@%@", remine, result];
+//    }
+//    return [NSString stringWithFormat:@"%@", result];
 }
 -(NSDecimalNumber *)decimalNumberFromHexStr
 {
-    NSDecimalNumber *result = [NSDecimalNumber zero];
-//    NSString * balance0xremoveStr = self;
-//    if ([balance0xremoveStr hasPrefix:@"0x"]) {
-//        balance0xremoveStr = [balance0xremoveStr substringWithRange:NSMakeRange(2, balance0xremoveStr.length - 2)];
+    return [[NSDecimalNumber alloc]initWithString:[self decFromHex]];
+//    NSDecimalNumber *result = [NSDecimalNumber zero];
+////    NSString * balance0xremoveStr = self;
+////    if ([balance0xremoveStr hasPrefix:@"0x"]) {
+////        balance0xremoveStr = [balance0xremoveStr substringWithRange:NSMakeRange(2, balance0xremoveStr.length - 2)];
+////    }
+//    NSString * balance0xremoveStr = [self removePrefix0x];
+//
+//    for (int i=0; i<balance0xremoveStr.length; i++) {
+//        NSString *currentStr = [balance0xremoveStr substringWithRange:NSMakeRange(balance0xremoveStr.length - i - 1, 1)];
+//        unsigned int balanceInt;
+//        [[NSScanner scannerWithString:currentStr] scanHexInt:&balanceInt];
+//        currentStr = [NSString stringWithFormat:@"%d", balanceInt];
+//        NSDecimalNumber *currentDecimal = [NSDecimalNumber decimalNumberWithString:currentStr];
+//
+//        NSDecimalNumber *multiflyDecimal = [NSDecimalNumber decimalNumberWithString:@"16"];
+//        multiflyDecimal = [multiflyDecimal decimalNumberByRaisingToPower:i];
+//
+//        NSDecimalNumber *currentResultDecimal = [currentDecimal decimalNumberByMultiplyingBy:multiflyDecimal];
+//        result = [result decimalNumberByAdding:currentResultDecimal];
 //    }
-    NSString * balance0xremoveStr = [self removePrefix0x];
-    
-    for (int i=0; i<balance0xremoveStr.length; i++) {
-        NSString *currentStr = [balance0xremoveStr substringWithRange:NSMakeRange(balance0xremoveStr.length - i - 1, 1)];
-        unsigned int balanceInt;
-        [[NSScanner scannerWithString:currentStr] scanHexInt:&balanceInt];
-        currentStr = [NSString stringWithFormat:@"%d", balanceInt];
-        NSDecimalNumber *currentDecimal = [NSDecimalNumber decimalNumberWithString:currentStr];
-        
-        NSDecimalNumber *multiflyDecimal = [NSDecimalNumber decimalNumberWithString:@"16"];
-        multiflyDecimal = [multiflyDecimal decimalNumberByRaisingToPower:i];
-        
-        
-        NSDecimalNumber *currentResultDecimal = [currentDecimal decimalNumberByMultiplyingBy:multiflyDecimal];
-        result = [result decimalNumberByAdding:currentResultDecimal];
-    }
-    return result;
+//    return result;
 }
 -(NSString *)hexUp
 {

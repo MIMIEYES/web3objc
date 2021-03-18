@@ -43,6 +43,11 @@
 		65891FCB2463F65B00E11F7E /* PKWeb3EthContract.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCA2463F65B00E11F7E /* PKWeb3EthContract.m */; };
 		65891FCE2463F66900E11F7E /* PKWeb3EthAccounts.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCD2463F66900E11F7E /* PKWeb3EthAccounts.m */; };
 		658ACDB9246B860300769DFA /* PKWeb3Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 658ACDB8246B860300769DFA /* PKWeb3Crypto.m */; };
+		E3407E7726034DB1001D5BCB /* sha3.c in Sources */ = {isa = PBXBuildFile; fileRef = E3407E4E26034DB1001D5BCB /* sha3.c */; };
+		E3407E7B26034DB1001D5BCB /* mpi.c in Sources */ = {isa = PBXBuildFile; fileRef = E3407E5B26034DB1001D5BCB /* mpi.c */; };
+		E3407E8026034DB1001D5BCB /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6526034DB1001D5BCB /* BigNumber.m */; };
+		E3407E8126034DB1001D5BCB /* RegEx.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6826034DB1001D5BCB /* RegEx.m */; };
+		E3407E8426034E09001D5BCB /* SecureData.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E8226034E09001D5BCB /* SecureData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +123,20 @@
 		658ACDB8246B860300769DFA /* PKWeb3Crypto.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKWeb3Crypto.m; sourceTree = "<group>"; };
 		A98BF9BFF7BEBE031F615939 /* Pods-Web3Objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.release.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.release.xcconfig"; sourceTree = "<group>"; };
 		D1CBF372FC1AAAEA8FC877F0 /* Pods-Web3Objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.debug.xcconfig"; sourceTree = "<group>"; };
+		E3407E3926034DB1001D5BCB /* sha3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
+		E3407E4126034DB1001D5BCB /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
+		E3407E4E26034DB1001D5BCB /* sha3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha3.c; sourceTree = "<group>"; };
+		E3407E5726034DB1001D5BCB /* tommath_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_private.h; sourceTree = "<group>"; };
+		E3407E5826034DB1001D5BCB /* tommath_class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_class.h; sourceTree = "<group>"; };
+		E3407E5926034DB1001D5BCB /* tommath_superclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_superclass.h; sourceTree = "<group>"; };
+		E3407E5A26034DB1001D5BCB /* tommath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath.h; sourceTree = "<group>"; };
+		E3407E5B26034DB1001D5BCB /* mpi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mpi.c; sourceTree = "<group>"; };
+		E3407E6526034DB1001D5BCB /* BigNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BigNumber.m; sourceTree = "<group>"; };
+		E3407E6626034DB1001D5BCB /* RegEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegEx.h; sourceTree = "<group>"; };
+		E3407E6726034DB1001D5BCB /* BigNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigNumber.h; sourceTree = "<group>"; };
+		E3407E6826034DB1001D5BCB /* RegEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegEx.m; sourceTree = "<group>"; };
+		E3407E8226034E09001D5BCB /* SecureData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecureData.m; sourceTree = "<group>"; };
+		E3407E8326034E09001D5BCB /* SecureData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecureData.h; sourceTree = "<group>"; };
 		FA120132AFF3F96DC23A2F2D /* libPods-Web3Objc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Web3Objc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -171,6 +190,8 @@
 		6504A3732462B75400CD20BB /* Web3Objc */ = {
 			isa = PBXGroup;
 			children = (
+				E3407E2D26034DB1001D5BCB /* ThirdParty */,
+				E3407E6426034DB1001D5BCB /* utils */,
 				6542BF3724B2DC14000520CF /* CVBTCLib */,
 				6504A4A02463A4FA00CD20BB /* Web3 */,
 				6504A4E92463AB6F00CD20BB /* CVETHLib */,
@@ -444,6 +465,50 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
+		E3407E2D26034DB1001D5BCB /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				E3407E2E26034DB1001D5BCB /* trezor-crypto */,
+				E3407E5626034DB1001D5BCB /* libtommath-1.0 */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		E3407E2E26034DB1001D5BCB /* trezor-crypto */ = {
+			isa = PBXGroup;
+			children = (
+				E3407E3926034DB1001D5BCB /* sha3.h */,
+				E3407E4126034DB1001D5BCB /* options.h */,
+				E3407E4E26034DB1001D5BCB /* sha3.c */,
+			);
+			path = "trezor-crypto";
+			sourceTree = "<group>";
+		};
+		E3407E5626034DB1001D5BCB /* libtommath-1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				E3407E5726034DB1001D5BCB /* tommath_private.h */,
+				E3407E5826034DB1001D5BCB /* tommath_class.h */,
+				E3407E5926034DB1001D5BCB /* tommath_superclass.h */,
+				E3407E5A26034DB1001D5BCB /* tommath.h */,
+				E3407E5B26034DB1001D5BCB /* mpi.c */,
+			);
+			path = "libtommath-1.0";
+			sourceTree = "<group>";
+		};
+		E3407E6426034DB1001D5BCB /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				E3407E8326034E09001D5BCB /* SecureData.h */,
+				E3407E8226034E09001D5BCB /* SecureData.m */,
+				E3407E6526034DB1001D5BCB /* BigNumber.m */,
+				E3407E6626034DB1001D5BCB /* RegEx.h */,
+				E3407E6726034DB1001D5BCB /* BigNumber.h */,
+				E3407E6826034DB1001D5BCB /* RegEx.m */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -542,6 +607,7 @@
 			files = (
 				658ACDB9246B860300769DFA /* PKWeb3Crypto.m in Sources */,
 				6504A4E82463AADC00CD20BB /* NSDecimalNumber+MOD.m in Sources */,
+				E3407E8126034DB1001D5BCB /* RegEx.m in Sources */,
 				6504A37C2462B75400CD20BB /* ViewController.m in Sources */,
 				6542BF3B24B2DC41000520CF /* CVBTCWallet.m in Sources */,
 				6504A4982463A4F200CD20BB /* SBJSON.m in Sources */,
@@ -556,11 +622,15 @@
 				65891FCE2463F66900E11F7E /* PKWeb3EthAccounts.m in Sources */,
 				65891FCB2463F65B00E11F7E /* PKWeb3EthContract.m in Sources */,
 				65891FC02463ED3F00E11F7E /* PKWeb3Objc.m in Sources */,
+				E3407E7B26034DB1001D5BCB /* mpi.c in Sources */,
 				6504A4FE2463AB6F00CD20BB /* CVETHJsonRPC.m in Sources */,
 				6504A4972463A4F200CD20BB /* SBJsonParser.m in Sources */,
 				6504A3872462B75700CD20BB /* main.m in Sources */,
+				E3407E7726034DB1001D5BCB /* sha3.c in Sources */,
 				6504A3792462B75400CD20BB /* SceneDelegate.m in Sources */,
 				6504A5002463AB6F00CD20BB /* CVETHABIArgument.m in Sources */,
+				E3407E8426034E09001D5BCB /* SecureData.m in Sources */,
+				E3407E8026034DB1001D5BCB /* BigNumber.m in Sources */,
 				65891FC32463ED9D00E11F7E /* PKWeb3Eth.m in Sources */,
 				6504A45E2463A4F200CD20BB /* Reachability.m in Sources */,
 				6504A4FF2463AB6F00CD20BB /* CVETH.m in Sources */,

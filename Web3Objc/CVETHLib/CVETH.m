@@ -121,11 +121,12 @@
     if ([_wei isEqualToString:@""] || [_wei isEqualToString:@"0"]) {
         return @"";
     }
-    NSDecimalNumber *wei = [NSDecimalNumber decimalNumberWithString:[_wei stringByReplacingOccurrencesOfString:@"," withString:@""]];
-    NSString *weiStr = [NSNumberFormatter
-                        localizedStringFromNumber:wei
-                        numberStyle:NSNumberFormatterNoStyle];
-    return [NSString stringWithFormat:@"0x%@", [weiStr hexFromDec]];
+    return [_wei hexFromDec];
+//    NSDecimalNumber *wei = [NSDecimalNumber decimalNumberWithString:[_wei stringByReplacingOccurrencesOfString:@"," withString:@""]];
+//    NSString *weiStr = [NSNumberFormatter
+//                        localizedStringFromNumber:wei
+//                        numberStyle:NSNumberFormatterNoStyle];
+//    return [NSString stringWithFormat:@"0x%@", [weiStr hexFromDec]];
 }
 +(NSString *)hexWeiFromEth:(NSString *)_eth
 {

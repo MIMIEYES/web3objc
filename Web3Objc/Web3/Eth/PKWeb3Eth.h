@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)sendSignedTransaction:(NSString *)_signedTx;
 -(NSDictionary *)signedTransaction:(CVETHTransaction *)_tx WithPrivateKey:(NSString *)_privateKey;
 -(NSString *)call:(CVETHTransaction *)_tx;
+-(NSString *)validateCallFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;
 -(NSString *)estimateGasFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;
 -(NSString *)getChainId;
 

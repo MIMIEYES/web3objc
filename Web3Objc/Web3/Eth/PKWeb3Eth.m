@@ -91,6 +91,18 @@
     }
     return result;
 }
+-(NSString *)validateCallFrom:(NSString *)_from TX:(CVETHTransaction *)_tx
+{
+    NSDictionary *result = [CVETHJsonRPC ethCallFrom:_from To:[_tx.to addPrefix0x] Gas:@"" GasPrice:@"" Value:_tx.value Data:[_tx.data addPrefix0x]];
+    if (result == nil) {
+        return @"error of empty response";
+    }
+    NSDictionary *error = [result valueForKey:@"error"];
+    if (error == nil) {
+        return nil;
+    }
+    return [error valueForKey:@"message"];
+}
 -(NSString *)estimateGasFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;
 {
     NSString *result = [[CVETHJsonRPC estimateGasFrom:[_from addPrefix0x] To:[_tx.to addPrefix0x] GasPrice:[_tx.gasPrice addPrefix0x] Amount:[_tx.value addPrefix0x] Data:[_tx.data addPrefix0x]] valueForKey:@"result"];

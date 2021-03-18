@@ -28,52 +28,27 @@
      web3 init
      */
     PKWeb3Objc *web3 = [PKWeb3Objc sharedInstance];
-    [web3 setEndPoint:@"https://ropsten.infura.io/v3/a9ef185dce6344ef8b18af3606320420" AndChainID:@"3"];
-    
-    
-    PKWeb3EthContract *testContract2 = [web3.eth.contract initWithAddress:@"0x0000000000000000000000000000000000000000" AbiJsonStr:@"[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"},{\"name\":\"\",\"type\":\"bytes[]\"},{\"name\":\"\",\"type\":\"string\"}],\"name\":\"tt\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}]"];
-    NSLog(@"encodeABI : %@", [testContract2 encodeABI:@"tt(address,bytes[],string)" WithArgument:@[@"0x1234567890123456789012345678901234567890", @[@"0xddff", @"0xaaaa"],@"hello world"]]);
-    NSLog(@"getDecodeData : %@", [testContract2 getDecodeData:@"0000000000000000000000001234567890123456789012345678901234567890000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000001400000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000002ddff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002aaaa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b68656c6c6f20776f726c64000000000000000000000000000000000000000000" WithOutput:@[@{@"name":@"addr",@"type":@"address"}, @{@"name":@"data",@"type":@"bytes[]"}, @{@"name":@"text",@"type":@"string"}]]);
-    
-    NSDictionary *jsonDic1 = @{@"version":@3,@"id":@"3c84d05b-e61b-1e57-c31a-5b799c3b6b70",@"address":@"015150a221f36bcbe4f03a57ddf299eb62f70e96",@"crypto":@{@"ciphertext":@"481b094db20720af3598bc5599ebc11dc7fd42724c8696fc345ac756d33995d3",@"cipherparams":@{@"iv":@"253229c3adb4854373b043fa7a83c65d"},@"cipher":@"aes-128-ctr",@"kdf":@"pbkdf2",@"kdfparams":@{@"dklen":@32,@"salt":@"c7f17e5dea5e945e38a598f8b69626b6c3f01443b8bfffa9d6f27e258dcc9644",@"c":@10240,@"prf":@"hmac-sha256"},@"mac":@"05f47f48dc4a3c951cc6ce2ca0a99f9c7a57ee9492d525c8e21fb5fdf6ea81e7"},@"name":@"",@"meta":@"{}"};
-    
-    NSLog(@"decrypt : %@", [web3.eth.accounts decrypt:jsonDic1 WithPassword:@")CFs=6~8mMzCxuPHkE+<j5rYV5/:E7NE"]);
+    [web3 setEndPoint:@"https://ropsten.infura.io/v3/7e086d9f3bdc48e4996a3997b33b032f" AndChainID:@"3"];
     
     /**test
      test var
      */
     NSString *testString = @"hello world";
-    NSString *testPrivateKey = @"0x97e416370613ca532c97bd84e4cc1d9aeb5d1e8e22cd6b660df3fa5823acfc71";
-    NSString *testAddress1 = @"0xB5DFe4836cFEA73f8e77656F8E7a649EcF29A2A3"; //testPrivateKey -> address
-    NSString *testAddress2 = @"0xa11cb28a6066684db968075101031d3151dc40ed";
-    
+    NSString *testPrivateKey = @"0x4594348E3482B751AA235B8E580EFEF69DB465B3A291C5662CEDA6459ED12E39";
+    NSString *testAddress1 = @"0xc11D9943805e56b630A401D4bd9A29550353EFa1"; //testPrivateKey -> address
+    NSString *testAddress2 = @"0xde03261F1bd05bA98Ba1517E4F54A02e63810986";
+    NSString *zeroAddress = @"0x0000000000000000000000000000000000000000";
+    NSString *multyAddress = @"0x7d759a3330cec9b766aa4c889715535eed3c0484";
+    NSString *htTokenAddress = @"0x5cCEffCFd3E2fE4AaCBF57123B6d42DDDc231990";
+    NSString *nerveAddress = @"TNVTdTSPRnXkDiagy7enti1KL75NU5AxC9sQA";
+
     /**test
      web3.crypto
      */
     NSData *testStringData = [testString dataUsingEncoding:NSUTF8StringEncoding];
     NSData *privKeyData = [[testPrivateKey removePrefix0x] parseHexData];
     NSData *pubKeyData = [CVETHWallet _publicKeyFromPrivateKey:privKeyData];
-    NSDictionary *encrypted = [web3.crypto encrypt:testStringData PubKey:pubKeyData];
-    NSLog(@"encrypt : %@", encrypted);
-    NSData *decrypted = [web3.crypto decrypt:encrypted PrivKey:privKeyData];
-    NSLog(@"decrypt : %@", [[NSString alloc] initWithData:decrypted encoding:NSUTF8StringEncoding]);
     
-    NSData *testSig = [web3.crypto sign:testStringData PrivKey:privKeyData];
-    NSLog(@"sign (r + s + v) : %@", [[testSig dataDirectString] addPrefix0x]);
-    NSLog(@"verify : %@", [web3.crypto verify:testStringData Sig:testSig]);
-    
-    NSLog(@"mac : %@", [[encrypted valueForKey:@"mac"] dataDirectString]);
-    NSLog(@"cipher : %@", [[encrypted valueForKey:@"cipher"] dataDirectString]);
-    NSLog(@"iv : %@", [[encrypted valueForKey:@"iv"] dataDirectString]);
-    NSLog(@"ephemPublicKey : %@", [[encrypted valueForKey:@"ephemPublicKey"] dataDirectString]);
-    NSLog(@"private key : 97e416370613ca532c97bd84e4cc1d9aeb5d1e8e22cd6b660df3fa5823acfc71");
-    
-    NSDictionary *rndTestEnc = @{@"ephemPublicKey": [@"04523c5605e67fda732aff8df4d8b71ff4dab655fb0bd12c0dbdc3bca026a13dda5f6501ff4d6473cd75e434ef8148bbaf163c3e101eb39bc77eef482865c058e5" parseHexData],
-    @"cipher" : [@"19b712e97c22d79bca2e69a8c251e47b" parseHexData],
-    @"iv" : [@"aef8e7e64c6accdb8d068ea97241a2a6" parseHexData],
-                              @"mac" : [@"d0b91b295ff761d943a1387750114fb09ca930f6d2307d309e377ed0aac4eebf" parseHexData] };
-    NSString *rndTestPrivKey = @"8D9363B42BCA8CAE790294D0FD05C3B402DCE367EBA9CBB9373197BB66D4D9EE";
-    NSLog(@"test dec : %@", [[NSString alloc] initWithData:[web3.crypto decrypt:rndTestEnc PrivKey:[rndTestPrivKey parseHexData]] encoding:NSUTF8StringEncoding]);
     /**test
     web3.utils
     */
@@ -94,55 +69,101 @@
     NSLog(@"create : %@", [web3.eth.accounts create]);
     NSLog(@"privateKeyToAccount : %@", [web3.eth.accounts privateKeyToAccount:testPrivateKey]);
     
+    /** ETH转账0.01个，from testAddress1 to testAddress2 **/
     CVETHTransaction *testTx = [[CVETHTransaction alloc] init];
-    testTx.nonce = [web3.utils numberToHex:@"61"];
-    testTx.gasPrice = [web3.utils numberToHex:@"2250000000"];
+    testTx.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+    testTx.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
     testTx.gasLimit = [web3.utils numberToHex:@"21000"];
     testTx.to = [testAddress2 removePrefix0x];
-    testTx.value = [web3.utils numberToHex:[web3.utils toWei:@"100" WithUnit:@"ether"]];
+    testTx.value = [web3.utils numberToHex:[web3.utils toWei:@"0.01" WithUnit:@"ether"]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:testTx WithPrivateKey:testPrivateKey];
     NSLog(@"signTransaction : %@", signTx);
     NSLog(@"signtx-recover : %@", [web3.eth.accounts recoverTransaction:[signTx valueForKey:@"rawTransaction"]]);
     NSLog(@"signtx-rlp decode : %@", rlp_decode([[signTx valueForKey:@"rawTransaction"] parseHexData]));
-    
-    NSString *testRawTx = @"0xf86c3d84861c468082520894a11cb28a6066684db968075101031d3151dc40ed89056bc75e2d631000008029a07670cffdc041a39174b917ae8ca4faadf3339d4ff27bc92df2b01e624cc0370ea032f201f955a9f852c5d288eac0e4bef1e70bb20b98088785854aeea26514d907";
-    NSLog(@"recoverTransaction : %@", [web3.eth.accounts recoverTransaction:testRawTx]);
-    NSLog(@"sign : %@", [web3.eth.accounts sign:@"hello world" WithPrivateKey:testPrivateKey]);
-    NSLog(@"recover : %@", [web3.eth.accounts recover:@"hello world" WithSignature:@"0xcc1b5ae5b05e159d401271afe5d786babfe5456b32bf17d74479dfa9094564c457b3935bea2a88f0cfa387b8a2e923a6bafdefd44200f2461093481b71d6bdb81c"]);
-    NSDictionary *encryptDic = [web3.eth.accounts encrypt:testPrivateKey WithPassword:@"test!"];
-    NSLog(@"encrypt : %@", encryptDic);
-    NSLog(@"encrypt to decrypt : %@", [web3.eth.accounts decrypt:encryptDic WithPassword:@"test!"]);
-    
-    NSDictionary *jsonDic = @{@"version":@3,@"id":@"a003acb8-076b-4f68-b4ff-3e5a7d9f33db",@"address":@"2c7536e3605d9c16a7a3d7b1898e529396a65c23",@"crypto":@{@"ciphertext":@"95e6242a314e5eb490c4a5819b43910ea921629e10b2769a660b2d8a31a2b757",@"cipherparams":@{@"iv":@"d53f6ddb5788a84a79744ec0fdaec26e"},@"cipher":@"aes-128-ctr",@"kdf":@"scrypt",@"kdfparams":@{@"dklen":@32,@"salt":@"44e6f5555f776f0fd795d9120780221a3dd656cb3434e2ceddb548d07ee0abf9",@"n":@8192,@"r":@8,@"p":@1},@"mac":@"840319587d58ade158c5a16459fb2d1b5d06fa299314ccbec46c0f0a9ac7006b"}};
-    
-    NSLog(@"decrypt : %@", [web3.eth.accounts decrypt:jsonDic WithPassword:@"test!"]);
-    
-    /**test
-     web3.eth
-     */
-    NSLog(@"getGasPrice : %@", [web3.eth getGasPrice]);
-    NSLog(@"getBlockNumber : %@", [web3.eth getBlockNumber]);
-    NSLog(@"getBalance : %@", [web3.utils fromWei:[web3.eth getBalance:testAddress2] WithUnit:@"ether"]);
-    NSLog(@"getTranactionCount : %@", [web3.eth getTranactionCount:testAddress2]);
-    NSLog(@"sendSignedTransaction : %@", [web3.eth sendSignedTransaction:@"0xf86c3d84861c468082520894a11cb28a6066684db968075101031d3151dc40ed89056bc75e2d631000008029a07670cffdc041a39174b917ae8ca4faadf3339d4ff27bc92df2b01e624cc0370ea032f201f955a9f852c5d288eac0e4bef1e70bb20b98088785854aeea26514d907"]);
-    NSLog(@"signedTransaction : %@", [web3.eth signedTransaction:testTx WithPrivateKey:testPrivateKey]);
-    NSLog(@"call : %@", [web3.eth call:testTx]);
+    /** 估算gaslimit **/
     NSLog(@"estimateGasFrom : %@", [web3.eth estimateGasFrom:testAddress2 TX:testTx]);
-    NSLog(@"getChainId : %@", [web3.eth getChainId]);
     
-    /**test
-     web3.eth.contract
-     */
-    PKWeb3EthContract *testContract = [web3.eth.contract initWithAddress:@"0x4946C9c48A1cB906142B180aC7e5E003D3CDD14f" AbiJsonStr:@"[{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"}],\"name\": \"holderLockBalance\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"name\",\"outputs\": [{\"name\": \"\",\"type\": \"string\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_spender\",\"type\": \"address\"},{\"name\": \"_value\",\"type\": \"uint256\"}],\"name\": \"approve\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"},{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"roundPresaleHolderList\",\"outputs\": [{\"name\": \"\",\"type\": \"address\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"}],\"name\": \"subOwner\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"presaleHolderList\",\"outputs\": [{\"name\": \"\",\"type\": \"address\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"holderList\",\"outputs\": [{\"name\": \"\",\"type\": \"address\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"totalSupply\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"}],\"name\": \"isHolders\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"totalEthInWei\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"fundsWallet\",\"outputs\": [{\"name\": \"\",\"type\": \"address\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_from\",\"type\": \"address\"},{\"name\": \"_to\",\"type\": \"address\"},{\"name\": \"_value\",\"type\": \"uint256\"}],\"name\": \"transferFrom\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"decimals\",\"outputs\": [{\"name\": \"\",\"type\": \"uint8\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_address\",\"type\": \"address\"}],\"name\": \"lockAddress\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_presales\",\"type\": \"uint256\"}],\"name\": \"presaleHolderRelease\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"totalPresaleHolderCount\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"}],\"name\": \"presaleJoinCount\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"totalHolderCount\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_spender\",\"type\": \"address\"},{\"name\": \"_subtractedValue\",\"type\": \"uint256\"}],\"name\": \"decreaseApproval\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"_owner\",\"type\": \"address\"}],\"name\": \"balanceOf\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_presales\",\"type\": \"uint256\"},{\"name\": \"_to\",\"type\": \"address\"},{\"name\": \"_amount\",\"type\": \"uint256\"},{\"name\": \"_presalesETH\",\"type\": \"uint256\"},{\"name\": \"_presalesBTH\",\"type\": \"uint256\"},{\"name\": \"_presalesCASH\",\"type\": \"uint256\"},{\"name\": \"_reason\",\"type\": \"string\"}],\"name\": \"manualPresales\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [],\"name\": \"lockStart\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"}],\"name\": \"isLockHolders\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_presales\",\"type\": \"uint256\"}],\"name\": \"presaleHolderLock\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"symbol\",\"outputs\": [{\"name\": \"\",\"type\": \"string\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [],\"name\": \"lockStop\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"totalCash\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_to\",\"type\": \"address\"},{\"name\": \"_value\",\"type\": \"uint256\"}],\"name\": \"transfer\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"totalRoundPresaleHolderCount\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_address\",\"type\": \"address\"}],\"name\": \"releaseAddress\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"presalesAmount\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [],\"name\": \"locked\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_address\",\"type\": \"address\"},{\"name\": \"_lockAmount\",\"type\": \"uint256\"}],\"name\": \"setHolderLockBalance\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"address\"},{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"holderPresaleInfo\",\"outputs\": [{\"name\": \"presalesTime\",\"type\": \"uint256\"},{\"name\": \"presalesAmount\",\"type\": \"uint256\"},{\"name\": \"presalesETH\",\"type\": \"uint256\"},{\"name\": \"presalesBTC\",\"type\": \"uint256\"},{\"name\": \"presalesCASH\",\"type\": \"uint256\"},{\"name\": \"reason\",\"type\": \"string\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_spender\",\"type\": \"address\"},{\"name\": \"_addedValue\",\"type\": \"uint256\"}],\"name\": \"increaseApproval\",\"outputs\": [{\"name\": \"\",\"type\": \"bool\"}],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"_owner\",\"type\": \"address\"},{\"name\": \"_spender\",\"type\": \"address\"}],\"name\": \"allowance\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_address\",\"type\": \"address\"}],\"name\": \"addSubOwner\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"constant\": true,\"inputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"name\": \"totalBtcInWei\",\"outputs\": [{\"name\": \"\",\"type\": \"uint256\"}],\"payable\": false,\"stateMutability\": \"view\",\"type\": \"function\"},{\"constant\": false,\"inputs\": [{\"name\": \"_address\",\"type\": \"address\"}],\"name\": \"removeSubOwner\",\"outputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"function\"},{\"inputs\": [],\"payable\": false,\"stateMutability\": \"nonpayable\",\"type\": \"constructor\"},{\"anonymous\": false,\"inputs\": [{\"indexed\": true,\"name\": \"from\",\"type\": \"address\"},{\"indexed\": true,\"name\": \"to\",\"type\": \"address\"},{\"indexed\": false,\"name\": \"value\",\"type\": \"uint256\"}],\"name\": \"Transfer\",\"type\": \"event\"},{\"anonymous\": false,\"inputs\": [{\"indexed\": true,\"name\": \"owner\",\"type\": \"address\"},{\"indexed\": true,\"name\": \"spender\",\"type\": \"address\"},{\"indexed\": false,\"name\": \"value\",\"type\": \"uint256\"}],\"name\": \"Approval\",\"type\": \"event\"}]"];
-    NSLog(@"encodeABI : %@", [testContract encodeABI:@"holderPresaleInfo(address,uint256)" WithArgument:@[@"0x88dbbd9a4dcf2bf8e08ae451fd4ef25800a0e9bc",@"1"]]);
-    NSLog(@"call : %@", [testContract call:@"holderPresaleInfo(address,uint256)" WithArgument:@[@"0x88dbbd9a4dcf2bf8e08ae451fd4ef25800a0e9bc",@"1"]]);
+    /** 广播交易 **/
+    //NSLog(@"sendSignedTransaction : %@", [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]]);
+
+    /** 获取nonce **/
+    NSLog(@"getTranactionCount : %@", [web3.eth getTranactionCount:testAddress2]);
+    /** 获取当前网络平均价格 **/
+    NSLog(@"getGasPrice : %@", [web3.eth getGasPrice]);
+    /** 获取网络最新高度 **/
+    NSLog(@"getBlockNumber : %@", [web3.eth getBlockNumber]);
+    /** 获取地址余额 **/
+    NSLog(@"getBalance : %@", [web3.utils fromWei:[web3.eth getBalance:testAddress2] WithUnit:@"ether"]);
     
-    /*btc wallet test*/
-    NSLog(@"wif to : %@", [CVBTCWallet wifToPrivateKey:@"5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ"]);
-    NSLog(@"pri to : %@", [CVBTCWallet privateToWif:@"0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D"]);
-    NSLog(@"isWIF : %@", [CVBTCWallet isWIF:@"5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn"] ? @"true" : @"false");
-    NSLog(@"isWIFCompressed : %@", [CVBTCWallet isWIFCompressed:@"KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ"] ? @"true" : @"false");
-    NSLog(@"getWalletAddress : %@", [CVBTCWallet getWalletAddress:@"0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D"]);
+    
+    
+    /** 查询地址的token余额 **/
+    PKWeb3EthContract *tokenContract = [web3.eth.contract initWithAddress:htTokenAddress AbiJsonStr:@"[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"type\":\"function\"},{\"name\":\"transfer\",\"type\":\"function\",\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"type\":\"uint256\",\"name\":\"_tokens\"}],\"constant\":false,\"outputs\":[],\"payable\":false},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"];
+    NSLog(@"encodeABI : %@", [tokenContract encodeABI:@"balanceOf(address)" WithArgument:@[testAddress1]]);
+    NSLog(@"查询testAddress1的token余额 : %@", [tokenContract call:@"balanceOf(address)" WithArgument:@[testAddress1]]);
+    
+    /** token转账 0.1个HT，from testAddress1 to testAddress2 **/
+    CVETHTransaction *testTx1 = [[CVETHTransaction alloc] init];
+    testTx1.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+    testTx1.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+    testTx1.gasLimit = [web3.utils numberToHex:@"100000"];
+    testTx1.to = [htTokenAddress removePrefix0x];
+    testTx1.data = [tokenContract encodeABI:@"transfer(address,uint256)" WithArgument:@[testAddress2, @"100000000000000000"]];
+    NSDictionary *signTx1 = [web3.eth.accounts signTransaction:testTx1 WithPrivateKey:testPrivateKey];
+    //NSLog(@"广播token转账交易 : %@", [web3.eth sendSignedTransaction:[signTx1 valueForKey:@"rawTransaction"]]);
+    NSLog(@"广播token转账交易 : %@", [signTx1 valueForKey:@"rawTransaction"]);
+
+    /** token授权 1个HT，from testAddress1 to testAddress2 **/
+    CVETHTransaction *testTx2 = [[CVETHTransaction alloc] init];
+    testTx2.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+    testTx2.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+    testTx2.gasLimit = [web3.utils numberToHex:@"80000"];
+    testTx2.to = [htTokenAddress removePrefix0x];
+    testTx2.data = [tokenContract encodeABI:@"approve(address,uint256)" WithArgument:@[testAddress2, @"1000000000000000000"]];
+    NSDictionary *signTx2 = [web3.eth.accounts signTransaction:testTx2 WithPrivateKey:testPrivateKey];
+    //NSLog(@"广播token授权交易 : %@", [web3.eth sendSignedTransaction:[signTx2 valueForKey:@"rawTransaction"]]);
+    NSLog(@"广播token授权交易 : %@", [signTx2 valueForKey:@"rawTransaction"]);
+
+    /** 查询地址的token授权额度 (testAddress1授权给testAddress2使用的额度) **/
+    NSLog(@"查询testAddress2的授权额度 : %@", [tokenContract call:@"allowance(address,address)" WithArgument:@[testAddress1,testAddress2]]);
+
+    /** 判断授权额度 < 396 * 10的26次方，则需要用户授权 **/
+    // 代码略
+
+    /** eth网络跨链转入nerve，这里有两种情况，一种是转主资产eth，另一种是转token **/
+    PKWeb3EthContract *multyContract = [web3.eth.contract initWithAddress:multyAddress AbiJsonStr:@"[{\"constant\":false,\"inputs\":[{\"name\":\"to\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"uint256\"},{\"name\":\"ERC20\",\"type\":\"address\"}],\"name\":\"crossOut\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"}]"];
+
+    // 第一种，转主资产eth，0.01个，from testAddress1 to nerveAddress
+    CVETHTransaction *testTx3 = [[CVETHTransaction alloc] init];
+    NSString *value = [web3.utils toWei:@"0.01" WithUnit:@"ether"];
+    testTx3.value = [web3.utils numberToHex:value];
+    testTx3.gasPrice = [web3.utils numberToHex:@"1"];
+    testTx3.gasLimit = [web3.utils numberToHex:@"1000000"];
+    testTx3.to = multyAddress;
+    testTx3.data = [multyContract encodeABI:@"crossOut(string,uint256,address)" WithArgument:@[nerveAddress,value,zeroAddress]];
+    NSString *estimateGas = [web3.eth estimateGasFrom:testAddress1 TX:testTx3];
+    testTx3.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+    testTx3.gasLimit = [web3.utils numberToHex:estimateGas];
+    testTx3.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+    NSDictionary *signTx3 = [web3.eth.accounts signTransaction:testTx3 WithPrivateKey:testPrivateKey];
+//    NSLog(@"广播eth跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:[signTx3 valueForKey:@"rawTransaction"]]);
+    NSLog(@"广播eth跨链转入nerve交易 : %@", [signTx3 valueForKey:@"rawTransaction"]);
+
+    //todo PKWeb3EthContract对象中，abiDic貌似一个共享变量
+    //todo 测试有问题m，暂时注释
+    // 第二种，转token资产HT，2个，from testAddress1 to nerveAddress
+//    CVETHTransaction *testTx4 = [[CVETHTransaction alloc] init];
+//    testTx4.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+//    testTx4.gasPrice = [web3.utils numberToHex:@"1"];
+//    testTx4.gasLimit = [web3.utils numberToHex:@"1000000"];
+//    testTx4.to = [multyAddress removePrefix0x];
+//    testTx4.data = [multyContract encodeABI:@"crossOut(string,uint256,address)" WithArgument:@[nerveAddress,@"2000000000000000000",htTokenAddress]];
+//    NSLog(@"estimateGasFrom : %@", [web3.eth estimateGasFrom:testAddress1 TX:testTx4]);
+//    testTx4.gasLimit = [web3.eth estimateGasFrom:testAddress1 TX:testTx4];
+//    testTx4.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+//    NSDictionary *signTx4 = [web3.eth.accounts signTransaction:testTx4 WithPrivateKey:testPrivateKey];
+//    //NSLog(@"广播token跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:signTx4]);
+//    NSLog(@"广播token跨链转入nerve交易 : %@", [signTx4 valueForKey:@"rawTransaction"]);
     
     return YES;
 }

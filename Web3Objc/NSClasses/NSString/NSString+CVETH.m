@@ -68,7 +68,20 @@ static const int8_t base58map[] = {
 }
 -(NSString *)hexFromDec
 {
-    return [BigNumber bigNumberWithDecimalString:self].hexString;
+    NSString *result = [[BigNumber bigNumberWithDecimalString:self].hexString removePrefix0x];
+    int index = 0;
+    for (int i=0; i<result.length; i++) {
+        NSString *currentStr = [result substringWithRange:NSMakeRange(i, 1)];
+        if (![currentStr isEqualToString:@"0"]) {
+            index = i;
+            break;
+        }
+    }
+    if (index > 0) {
+        result = [result substringWithRange:NSMakeRange(index, result.length - index)];
+    }
+    return result;
+    
 //    NSString *decStr = [self stringByReplacingOccurrencesOfString:@"," withString:@""];
 //    NSString *result = @"";
 //    NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithString:decStr];

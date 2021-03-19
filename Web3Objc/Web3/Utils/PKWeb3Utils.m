@@ -8,9 +8,21 @@
 
 #import "PKWeb3Utils.h"
 #import "CVETH.h"
+#import "RegEx.h"
 #define UNIT_MAP @{ @"noether": @"0", @"wei": @"1", @"kwei": @"1000", @"Kwei": @"1000", @"babbage": @"1000", @"femtoether": @"1000", @"mwei": @"1000000", @"Mwei": @"1000000", @"lovelace": @"1000000", @"picoether": @"1000000", @"gwei": @"1000000000", @"Gwei": @"1000000000", @"shannon": @"1000000000", @"nanoether": @"1000000000", @"nano": @"1000000000", @"szabo": @"1000000000000", @"microether": @"1000000000000", @"micro": @"1000000000000", @"finney": @"1000000000000000", @"milliether": @"1000000000000000", @"milli": @"1000000000000000", @"ether": @"1000000000000000000", @"kether": @"1000000000000000000000", @"grand": @"1000000000000000000000", @"mether": @"1000000000000000000000000", @"gether": @"1000000000000000000000000000", @"tether": @"1000000000000000000000000000000"}
 
 @implementation PKWeb3Utils
+
+static RegEx *RegexNumbersOnly = nil;
+static NSUInteger etherDecimals = 18;
+
++ (void)initialize {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        RegexNumbersOnly = [RegEx regExWithPattern:@"^[0-9]*$"];
+    });
+}
+
 -(NSString *)randomHex:(NSInteger)_size
 {
     return [[CVETHWallet getRandomKeyByBytes:_size] addPrefix0x];
@@ -51,46 +63,78 @@
     NSString *retVal = [[NSString alloc] initWithData:[[_hex removePrefix0x] parseHexData] encoding:NSUTF8StringEncoding];
     return retVal;
 }
--(NSString *)toWei:(NSString *)_number WithUnit:(nullable NSString *)_unit
+
+-(NSString *)formatUnits:(NSString *)value WithUnit:(NSUInteger)_unit
 {
-    NSString *multiplyby = [UNIT_MAP valueForKey:@"ether"];
-    if (_unit != nil) {
-        multiplyby = [UNIT_MAP valueForKey:_unit];
-    }
-    if (multiplyby == nil || [multiplyby isEqualToString:@""] || [multiplyby isEqualToString:@"0"]) {
-        return @"0";
-    }
-    NSDecimalNumber *wei = [[NSDecimalNumber decimalNumberWithString:_number] decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:multiplyby]];
-    return [NSNumberFormatter
-            localizedStringFromNumber:wei
-            numberStyle:NSNumberFormatterNoStyle];
+    if (!value) { return nil; }
     
+    NSString *weiString = value;
+    
+    BOOL negative = NO;
+    if ([weiString hasPrefix:@"-"]) {
+        negative = YES;
+        weiString = [weiString substringFromIndex:1];
+    }
+    
+    NSUInteger loop = _unit + 1;
+    while (weiString.length < loop) {
+        weiString = [@"0" stringByAppendingString:weiString];
+    }
+    
+    NSUInteger decimalIndex = weiString.length - _unit;
+    NSString *whole = [weiString substringToIndex:decimalIndex];
+    NSString *decimal = [weiString substringFromIndex:decimalIndex];
+    
+    
+    while (decimal.length > 1 && [decimal hasSuffix:@"0"]) {
+        decimal = [decimal substringToIndex:decimal.length - 1];
+    }
+    
+    if (negative) {
+        whole = [@"-" stringByAppendingString:whole];
+    }
+    
+    return [NSString stringWithFormat:@"%@.%@", whole, decimal];
 }
--(NSString *)fromWei:(NSString *)_number WithUnit:(nullable NSString *)_unit
+-(NSString *)parseUnits:(NSString *)value WithUnit:(NSUInteger)_unit
 {
-    NSString *weiStr = [NSString stringWithFormat:@"000000000000000000000000000000%@", _number];
-    int _decimals = 18;
-    if (_unit != nil) {
-        if ([_unit isEqualToString:@"noether"]) {
-            return @"0";
-        } else if ([_unit isEqualToString:@"wei"]) {
-            return _number;
-        }
-        _decimals = (int)[(NSString *)[UNIT_MAP valueForKey:_unit] length] - 1;
+    if ([value isEqualToString:@"."]) { return nil; }
+    
+    BOOL negative = NO;
+    if ([value hasPrefix:@"-"]) {
+        negative = YES;
+        value = [value substringFromIndex:1];
     }
     
-    NSString *rearDecimalPoint = [weiStr substringWithRange:NSMakeRange(weiStr.length - _decimals, _decimals)];
-    NSDecimalNumber *rearDecimal = [NSDecimalNumber decimalNumberWithString:rearDecimalPoint];
-    NSDecimalNumber *decimalPow = [[NSDecimalNumber decimalNumberWithString:@"10"] decimalNumberByRaisingToPower:_decimals];
-    rearDecimal = [rearDecimal decimalNumberByDividingBy:decimalPow];
-    rearDecimalPoint = [NSString stringWithFormat:@"%@", rearDecimal];
-    if ([rearDecimalPoint hasPrefix:@"0."]) {
-        rearDecimalPoint = [rearDecimalPoint substringWithRange:NSMakeRange(2, rearDecimalPoint.length - 2)];
-    }
-    NSString *frontDecimalPoint = [weiStr substringWithRange:NSMakeRange(0, weiStr.length - _decimals)];
-    NSDecimalNumber *frontDecimal = [NSDecimalNumber decimalNumberWithString:frontDecimalPoint];
-    NSString *result = [NSString stringWithFormat:@"%@.%@", [NSNumberFormatter localizedStringFromNumber:frontDecimal numberStyle:NSNumberFormatterDecimalStyle], rearDecimalPoint];
+    if (value.length == 0) { return nil; }
     
-    return result;
+    NSArray *parts = [value componentsSeparatedByString:@"."];
+    if ([parts count] > 2) { return nil; }
+    
+    NSString *whole = [parts objectAtIndex:0];
+    if (whole.length == 0) { whole = @"0"; }
+    if (![RegexNumbersOnly matchesExactly:whole]) { return nil; }
+    
+    NSString *decimal = ([parts count] > 1) ? [parts objectAtIndex:1]: @"0";
+    if (!decimal || decimal.length == 0) { decimal = @"0"; }
+    if (![RegexNumbersOnly matchesExactly:decimal]) { return nil; }
+    
+    if (decimal.length > _unit) { return nil; }
+    while (decimal.length < _unit) { decimal = [decimal stringByAppendingString:@"0"]; }
+    
+    NSString *wei = [whole stringByAppendingString:decimal];
+    if (negative) { wei = [@"-" stringByAppendingString:wei]; }
+        
+    return wei;
 }
+
+-(NSString *)formatEther:(NSString *)wei
+{
+    return [self formatUnits:wei WithUnit:etherDecimals];
+}
+-(NSString *)parseEther:(NSString *)etherString
+{
+    return [self parseUnits:etherString WithUnit:etherDecimals];
+}
+
 @end

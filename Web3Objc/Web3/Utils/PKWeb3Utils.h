@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BigNumber.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,8 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)hexToNumber:(NSString *)_hex;
 -(NSString *)utf8ToHex:(NSString *)_String;
 -(NSString *)hexToUtf8:(NSString *)_hex;
--(NSString *)toWei:(NSString *)_number WithUnit:(nullable NSString *)_unit;
--(NSString *)fromWei:(NSString *)_number WithUnit:(nullable NSString *)_unit;
+
+-(NSString *)formatUnits:(NSString *)value WithUnit:(NSUInteger)_unit;
+-(NSString *)parseUnits:(NSString *)value WithUnit:(NSUInteger)_unit;
+
+-(NSString *)formatEther:(NSString *)wei;
+-(NSString *)parseEther:(NSString *)etherString;
 @end
 
 NS_ASSUME_NONNULL_END

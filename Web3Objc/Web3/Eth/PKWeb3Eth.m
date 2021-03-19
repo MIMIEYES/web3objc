@@ -26,7 +26,8 @@
     NSString *result = [[CVETHJsonRPC getGasPrice] valueForKey:@"result"];
     PKWeb3Objc *web3 = [PKWeb3Objc sharedInstance];
     if (result == nil || [result isEqualToString:@""]) {
-        return [web3.utils toWei:@"1" WithUnit:@"gwei"];
+//        return [web3.utils toWei:@"1" WithUnit:@"gwei"];
+        return [web3.utils parseUnits:@"1" WithUnit:9];
     }
     return [result decFromHex];
 }
@@ -105,7 +106,7 @@
 }
 -(NSString *)estimateGasFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;
 {
-    NSString *result = [[CVETHJsonRPC estimateGasFrom:[_from addPrefix0x] To:[_tx.to addPrefix0x] GasPrice:[_tx.gasPrice addPrefix0x] Amount:[_tx.value addPrefix0x] Data:[_tx.data addPrefix0x]] valueForKey:@"result"];
+    NSString *result = [[CVETHJsonRPC estimateGasFrom:[_from addPrefix0x] To:[_tx.to addPrefix0x] GasPrice:[_tx.gasPrice addPrefix0x] Amount:_tx.value Data:[_tx.data addPrefix0x]] valueForKey:@"result"];
     if (result == nil || [result isEqualToString:@""]) {
         return nil;
     }

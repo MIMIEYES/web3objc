@@ -121,7 +121,7 @@
     if ([_wei isEqualToString:@""] || [_wei isEqualToString:@"0"]) {
         return @"";
     }
-    return [_wei hexFromDec];
+    return [NSString stringWithFormat:@"0x%@", [_wei hexFromDec]];
 //    NSDecimalNumber *wei = [NSDecimalNumber decimalNumberWithString:[_wei stringByReplacingOccurrencesOfString:@"," withString:@""]];
 //    NSString *weiStr = [NSNumberFormatter
 //                        localizedStringFromNumber:wei

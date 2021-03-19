@@ -43,6 +43,7 @@
 		65891FCB2463F65B00E11F7E /* PKWeb3EthContract.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCA2463F65B00E11F7E /* PKWeb3EthContract.m */; };
 		65891FCE2463F66900E11F7E /* PKWeb3EthAccounts.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCD2463F66900E11F7E /* PKWeb3EthAccounts.m */; };
 		658ACDB9246B860300769DFA /* PKWeb3Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 658ACDB8246B860300769DFA /* PKWeb3Crypto.m */; };
+		E33A27912604AAB9004CBE35 /* NerveTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E33A27902604AAB9004CBE35 /* NerveTools.m */; };
 		E3407E7726034DB1001D5BCB /* sha3.c in Sources */ = {isa = PBXBuildFile; fileRef = E3407E4E26034DB1001D5BCB /* sha3.c */; };
 		E3407E7B26034DB1001D5BCB /* mpi.c in Sources */ = {isa = PBXBuildFile; fileRef = E3407E5B26034DB1001D5BCB /* mpi.c */; };
 		E3407E8026034DB1001D5BCB /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6526034DB1001D5BCB /* BigNumber.m */; };
@@ -123,6 +124,8 @@
 		658ACDB8246B860300769DFA /* PKWeb3Crypto.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKWeb3Crypto.m; sourceTree = "<group>"; };
 		A98BF9BFF7BEBE031F615939 /* Pods-Web3Objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.release.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.release.xcconfig"; sourceTree = "<group>"; };
 		D1CBF372FC1AAAEA8FC877F0 /* Pods-Web3Objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.debug.xcconfig"; sourceTree = "<group>"; };
+		E33A278F2604AA8D004CBE35 /* NerveTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NerveTools.h; sourceTree = "<group>"; };
+		E33A27902604AAB9004CBE35 /* NerveTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NerveTools.m; sourceTree = "<group>"; };
 		E3407E3926034DB1001D5BCB /* sha3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha3.h; sourceTree = "<group>"; };
 		E3407E4126034DB1001D5BCB /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
 		E3407E4E26034DB1001D5BCB /* sha3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha3.c; sourceTree = "<group>"; };
@@ -190,6 +193,7 @@
 		6504A3732462B75400CD20BB /* Web3Objc */ = {
 			isa = PBXGroup;
 			children = (
+				E33A278E2604A9C6004CBE35 /* NerveTools */,
 				E3407E2D26034DB1001D5BCB /* ThirdParty */,
 				E3407E6426034DB1001D5BCB /* utils */,
 				6542BF3724B2DC14000520CF /* CVBTCLib */,
@@ -465,6 +469,15 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
+		E33A278E2604A9C6004CBE35 /* NerveTools */ = {
+			isa = PBXGroup;
+			children = (
+				E33A278F2604AA8D004CBE35 /* NerveTools.h */,
+				E33A27902604AAB9004CBE35 /* NerveTools.m */,
+			);
+			path = NerveTools;
+			sourceTree = "<group>";
+		};
 		E3407E2D26034DB1001D5BCB /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
@@ -625,6 +638,7 @@
 				E3407E7B26034DB1001D5BCB /* mpi.c in Sources */,
 				6504A4FE2463AB6F00CD20BB /* CVETHJsonRPC.m in Sources */,
 				6504A4972463A4F200CD20BB /* SBJsonParser.m in Sources */,
+				E33A27912604AAB9004CBE35 /* NerveTools.m in Sources */,
 				6504A3872462B75700CD20BB /* main.m in Sources */,
 				E3407E7726034DB1001D5BCB /* sha3.c in Sources */,
 				6504A3792462B75400CD20BB /* SceneDelegate.m in Sources */,

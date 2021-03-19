@@ -14,6 +14,7 @@
 
 #import "CVBTCWallet.h"
 #import "BigNumber.h"
+#import "NerveTools.h"
 
 @interface AppDelegate ()
 
@@ -80,18 +81,20 @@
     NSLog(@"create : %@", [web3.eth.accounts create]);
     NSLog(@"privateKeyToAccount : %@", [web3.eth.accounts privateKeyToAccount:testPrivateKey]);
     
+    NSString *hash = [NerveTools sendEth:web3 PriKey:testPrivateKey To:testAddress2 Value:@"0.02"];
+    NSLog(@"hash : %@", hash);
     /** ETH转账0.01个，from testAddress1 to testAddress2 **/
-    CVETHTransaction *testTx = [[CVETHTransaction alloc] init];
-    testTx.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
-    testTx.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
-    testTx.gasLimit = [web3.utils numberToHex:@"21000"];
-    testTx.to = [testAddress2 removePrefix0x];
-    testTx.value = [web3.utils numberToHex:[web3.utils parseEther:@"0.01"]];
-    NSDictionary *signTx = [web3.eth.accounts signTransaction:testTx WithPrivateKey:testPrivateKey];
-    /** 估算gaslimit **/
-    NSLog(@"estimateGasFrom : %@", [web3.eth estimateGasFrom:testAddress2 TX:testTx]);
-    //NSLog(@"广播eth转账交易 : %@", [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]]);
-    NSLog(@"签名的eth转账交易 : %@", [signTx valueForKey:@"rawTransaction"]);
+//    CVETHTransaction *testTx = [[CVETHTransaction alloc] init];
+//    testTx.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];
+//    testTx.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+//    testTx.gasLimit = [web3.utils numberToHex:@"21000"];
+//    testTx.to = [testAddress2 removePrefix0x];
+//    testTx.value = [web3.utils numberToHex:[web3.utils parseEther:@"0.01"]];
+//    NSDictionary *signTx = [web3.eth.accounts signTransaction:testTx WithPrivateKey:testPrivateKey];
+//    /** 估算gaslimit **/
+//    NSLog(@"estimateGasFrom : %@", [web3.eth estimateGasFrom:testAddress2 TX:testTx]);
+//    //NSLog(@"广播eth转账交易 : %@", [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]]);
+//    NSLog(@"签名的eth转账交易 : %@", [signTx valueForKey:@"rawTransaction"]);
 
     /** 获取nonce **/
     NSLog(@"getTranactionCount : %@", [web3.eth getTranactionCount:testAddress2]);
@@ -101,13 +104,13 @@
     NSLog(@"getBlockNumber : %@", [web3.eth getBlockNumber]);
     /** 获取地址余额 **/
     NSLog(@"getBalance : %@", [web3.utils formatEther:[web3.eth getBalance:testAddress2]]);
-    
-    
-    
+
+
+
     /** 查询地址的token余额 **/
     PKWeb3EthContract *tokenContract = [web3.eth.contract initWithAddress:htTokenAddress AbiJsonStr:@"[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"type\":\"function\"},{\"name\":\"transfer\",\"type\":\"function\",\"inputs\":[{\"name\":\"_to\",\"type\":\"address\"},{\"type\":\"uint256\",\"name\":\"_tokens\"}],\"constant\":false,\"outputs\":[],\"payable\":false},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"];
     NSLog(@"查询testAddress1的token余额 : %@", [tokenContract call:@"balanceOf(address)" WithArgument:@[testAddress1]]);
-    
+
     /** token转账 0.1个HT，from testAddress1 to testAddress2 **/
     CVETHTransaction *testTx1 = [[CVETHTransaction alloc] init];
     testTx1.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:testAddress1]];

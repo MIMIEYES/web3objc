@@ -36,7 +36,7 @@ static BigNumber *minApprove = nil;
     tx.to = [_to removePrefix0x];
     tx.value = [web3.utils numberToHex:[web3.utils parseEther:_value]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]];
+    return [signTx valueForKey:@"rawTransaction"];
 }
 
 + (NSString *)sendERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value
@@ -51,7 +51,7 @@ static BigNumber *minApprove = nil;
     tx.to = [_contract removePrefix0x];
     tx.data = [tokenContract encodeABI:@"transfer(address,uint256)" WithArgument:@[_to, [web3.utils parseUnits:_value WithUnit:_decimals]]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]];
+    return [signTx valueForKey:@"rawTransaction"];
 }
 
 + (NSString *)approveERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value
@@ -66,7 +66,7 @@ static BigNumber *minApprove = nil;
     tx.to = [_contract removePrefix0x];
     tx.data = [tokenContract encodeABI:@"approve(address,uint256)" WithArgument:@[_to, [web3.utils parseUnits:_value WithUnit:_decimals]]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]];
+    return [signTx valueForKey:@"rawTransaction"];
 }
 
 + (NSString *)getERC20Allowance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract Spender: (NSString *)_spender
@@ -110,7 +110,7 @@ static BigNumber *minApprove = nil;
         return @"";
     }
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]];
+    return [signTx valueForKey:@"rawTransaction"];
 }
 
 + (NSString *)crossOutWithERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey MultyContract: (NSString *)_multyContract ERC20Contract: (NSString *)_erc20Contract ERC20Decimals: (NSUInteger)_erc20Decimals To: (NSString *)_to Value: (NSString *)_value
@@ -148,7 +148,7 @@ static BigNumber *minApprove = nil;
         return @"";
     }
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [web3.eth sendSignedTransaction:[signTx valueForKey:@"rawTransaction"]];
+    return [signTx valueForKey:@"rawTransaction"];
 }
 
 @end

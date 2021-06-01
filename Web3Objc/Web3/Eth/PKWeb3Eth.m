@@ -57,9 +57,14 @@
 }
 -(NSString *)sendSignedTransaction:(NSString *)_signedTx
 {
-    NSString *result = [[CVETHJsonRPC sendRawTransaction:[_signedTx addPrefix0x]] valueForKey:@"result"];
+    NSDictionary *resultData = [CVETHJsonRPC sendRawTransaction:[_signedTx addPrefix0x]];
+    NSString *result = [resultData valueForKey:@"result"];
     if (result == nil || [result isEqualToString:@""]) {
-        return nil;
+        NSDictionary *errorData = [resultData valueForKey:@"error"];
+        if (errorData == nil) {
+            return nil;
+        }
+        return [@"error: " stringByAppendingString:[errorData valueForKey:@"message"]];
     }
     return result;
 }

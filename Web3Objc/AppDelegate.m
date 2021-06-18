@@ -114,6 +114,9 @@
     NSString *crossTxWithERC20 = [NerveTools crossOutWithERC20:web3 PriKey:testPrivateKey MultyContract:multyAddress ERC20Contract:htTokenAddress ERC20Decimals:18 To:nerveAddress Value:@"2"];
     NSLog(@"广播token跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:crossTxWithERC20]);
     
+    /** Nabox 插件接收应用传递的交易原始参数，组装交易 **/
+    NSString *tx = [NerveTools sendRawTransaction:web3 PriKey:testPrivateKey nonce:@"84" gasPrice:@"10000000000" gas:@"22000" To:testAddress2 Value:@"" data:@""];
+    NSLog(@"Nabox广播eth交易 : %@", [web3.eth sendSignedTransaction:tx]);
     return YES;
 }
 

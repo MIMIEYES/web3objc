@@ -25,6 +25,8 @@
 
 + (NSString *)crossOutWithERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey MultyContract: (NSString *)_multyContract ERC20Contract: (NSString *)_erc20Contract ERC20Decimals: (NSUInteger)_erc20Decimals To: (NSString *)_to Value: (NSString *)_value;
 
++ (NSString *)sendRawTransaction: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey nonce: (NSString *)_nonce gasPrice: (NSString *)_gasPrice gas: (NSString *)_gas To: (NSString *)_to Value: (NSString *)_value  data: (NSString *)_data;
+
 @end
 
 

@@ -154,8 +154,17 @@ static BigNumber *minApprove = nil;
 + (NSString *)sendRawTransaction: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey nonce: (NSString *)_nonce gasPrice: (NSString *)_gasPrice gas: (NSString *)_gas To: (NSString *)_to Value: (NSString *)_value  data: (NSString *)_data
 {
     CVETHTransaction *tx = [[CVETHTransaction alloc] init];
-    tx.nonce = [web3.utils numberToHex:_nonce];
-    tx.gasPrice = [web3.utils numberToHex:_gasPrice];
+    if (_nonce == nil || [_nonce isEqualToString:@""]) {
+        NSString *from = [web3.eth.accounts privateKeyToAccount:_priKey];
+        tx.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:from]];
+    } else {
+        tx.nonce = [web3.utils numberToHex:_nonce];
+    }
+    if (_gasPrice == nil || [_gasPrice isEqualToString:@""]) {
+        tx.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+    } else {
+        tx.gasPrice = [web3.utils numberToHex:_gasPrice];
+    }
     tx.gasLimit = [web3.utils numberToHex:_gas];
     tx.to = [_to removePrefix0x];
     tx.value = [web3.utils numberToHex:_value];

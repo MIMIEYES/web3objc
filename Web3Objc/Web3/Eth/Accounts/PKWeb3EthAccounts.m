@@ -29,10 +29,11 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
 //    NSString *messageHash = [[[_tx hashForSign] dataDirectString] addPrefix0x];
     NSString *rawTransaction = [_tx getSignTX:[_privateKey removePrefix0x]];
     NSString *transactionHash = [[[[rawTransaction parseHexData] keccak256] dataDirectString] addPrefix0x];
-    NSString *v = [[[_tx getSignedV] dataDirectString] addPrefix0x];
-    NSString *r = [[[_tx getSignedR] dataDirectString] addPrefix0x];
-    NSString *s = [[[_tx getSignedS] dataDirectString] addPrefix0x];
-    return @{@"messageHash":@"", @"v":v, @"r":r, @"s":s, @"rawTransaction":rawTransaction, @"transactionHash":transactionHash};
+    return @{@"rawTransaction":rawTransaction, @"transactionHash":transactionHash};
+//    NSString *v = [[[_tx getSignedV] dataDirectString] addPrefix0x];
+//    NSString *r = [[[_tx getSignedR] dataDirectString] addPrefix0x];
+//    NSString *s = [[[_tx getSignedS] dataDirectString] addPrefix0x];
+//    return @{@"messageHash":@"", @"v":v, @"r":r, @"s":s, @"rawTransaction":rawTransaction, @"transactionHash":transactionHash};
 }
 -(NSString *)recoverTransaction:(NSString *)_rawTx
 {

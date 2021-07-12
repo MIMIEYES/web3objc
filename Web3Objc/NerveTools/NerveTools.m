@@ -8,6 +8,7 @@
 
 #import "NerveTools.h"
 #import "PKWeb3Objc.h"
+#import "Web3Objc-Swift.h"
 
 @implementation NerveTools
 
@@ -15,6 +16,8 @@ static NSString *tokenContractAbi = nil;
 static NSString *multyContractAbi = nil;
 static NSString *zeroAddress = nil;
 static BigNumber *minApprove = nil;
+static SwiftClass *sc = nil;
+static PKWeb3EthAccounts *accounts = nil;
 
 + (void)initialize {
     static dispatch_once_t onceToken;
@@ -23,6 +26,8 @@ static BigNumber *minApprove = nil;
         multyContractAbi = @"[{\"constant\":false,\"inputs\":[{\"name\":\"to\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"uint256\"},{\"name\":\"ERC20\",\"type\":\"address\"}],\"name\":\"crossOut\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"}]";
         zeroAddress = @"0x0000000000000000000000000000000000000000";
         minApprove = [BigNumber bigNumberWithDecimalString:@"39600000000000000000000000000"];
+        sc = [[SwiftClass alloc] init];
+        accounts = [[PKWeb3EthAccounts alloc] init];
     });
 }
 
@@ -66,7 +71,6 @@ static BigNumber *minApprove = nil;
     tx.to = [_contract removePrefix0x];
     tx.data = [tokenContract encodeABI:@"approve(address,uint256)" WithArgument:@[_to, [web3.utils parseUnits:_value WithUnit:_decimals]]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    NSLog(signTx.description);
     return [signTx valueForKey:@"rawTransaction"];
 }
 
@@ -172,6 +176,30 @@ static BigNumber *minApprove = nil;
     tx.data = _data;
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
     return [signTx valueForKey:@"rawTransaction"];
+}
+
++ (NSString *)ethSign: (NSString *)_priKey Message: (NSString *)_message
+{
+    if (![_message isHex]) {
+        return nil;
+    }
+    NSData *signature;
+    signature = [[_message parseHexData] signWithPrivateKeyData:[_priKey parseHexData]];
+    NSString *result = [NSString stringWithFormat:@"0x%@", [signature dataDirectString]];
+    return result;
+}
+
++ (NSString *)personalSign: (NSString *)_priKey Message: (NSString *)_message
+{
+    NSDictionary *result = [accounts sign:_message WithPrivateKey:_priKey];
+    return [result valueForKey:@"signature"];
+}
+
++ (NSString *)signTypedDataV4: (NSString *)_priKey Message: (NSString *)_message
+{
+    NSString *str2 = [sc signTypedDataV4WithMessage:_message];
+    NSData *signature = [[str2 parseHexData] signWithPrivateKeyData:[_priKey parseHexData]];
+    return [NSString stringWithFormat:@"0x%@", [signature dataDirectString]];
 }
 
 @end

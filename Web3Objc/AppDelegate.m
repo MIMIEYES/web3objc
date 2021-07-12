@@ -40,6 +40,7 @@
     NSString *testAddress2 = @"0xde03261F1bd05bA98Ba1517E4F54A02e63810986";
     NSString *multyAddress = @"0x7d759a3330cec9b766aa4c889715535eed3c0484";
     NSString *htTokenAddress = @"0x5cCEffCFd3E2fE4AaCBF57123B6d42DDDc231990";
+    NSString *nulsTokenAddress = @"0xae7fccff7ec3cf126cd96678adae83a2b303791c";
     NSString *nerveAddress = @"TNVTdTSPRnXkDiagy7enti1KL75NU5AxC9sQA";
 
     
@@ -87,21 +88,21 @@
 
     /**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=【组装交易并广播交易】-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=****/
     /** ETH转账0.01个，from testAddress1 to testAddress2 **/
-//    NSString *ethTx = [NerveTools sendEth:web3 PriKey:testPrivateKey To:testAddress2 Value:@"0.02"];
+    NSString *ethTx = [NerveTools sendEth:web3 PriKey:testPrivateKey To:testAddress2 Value:@"0.02"];
 //    NSLog(@"广播eth转账交易 : %@", [web3.eth sendSignedTransaction:ethTx]);
 
 
     /** 查询地址的token余额 */
     NSString *tokenBalance = [NerveTools getERC20Balance:web3 Owner:testAddress1 ERC20Contract:htTokenAddress];
-    NSLog(@"查询testAddress1的token余额 : %@", tokenBalance);
+//    NSLog(@"查询testAddress1的token余额 : %@", tokenBalance);
 
     /** token转账 0.1个HT，from testAddress1 to testAddress2 **/
-//    NSString *erc20Tx = [NerveTools sendERC20:web3 PriKey:testPrivateKey ERC20Contract:htTokenAddress ERC20Decimals:18 To:testAddress2 Value:@"0.1"];
+    NSString *erc20Tx = [NerveTools sendERC20:web3 PriKey:testPrivateKey ERC20Contract:htTokenAddress ERC20Decimals:18 To:testAddress2 Value:@"0.1"];
 //    NSLog(@"广播token转账交易 : %@", [web3.eth sendSignedTransaction:erc20Tx]);
 
     /** token授权 1个HT，from testAddress1 to testAddress2 **/
-    NSString *approveTx = [NerveTools approveERC20:web3 PriKey:testPrivateKey ERC20Contract:htTokenAddress ERC20Decimals:18 To:testAddress2 Value:@"1"];
-    NSLog(@"广播token授权交易 : %@, hash: %@", approveTx, [web3.eth sendSignedTransaction:approveTx]);
+    NSString *approveTx = [NerveTools approveERC20:web3 PriKey:testPrivateKey ERC20Contract:nulsTokenAddress ERC20Decimals:8 To:testAddress2 Value:@"1"];
+//    NSLog(@"广播token授权交易 : %@, hash: %@", approveTx, [web3.eth sendSignedTransaction:approveTx]);
 
     /** 查询地址的token授权额度 **/
     NSString *allowance = [NerveTools getERC20Allowance:web3 Owner:testAddress1 ERC20Contract:htTokenAddress Spender:multyAddress];
@@ -109,17 +110,17 @@
     NSString *allowance1 = [NerveTools getERC20Allowance:web3 Owner:testAddress1 ERC20Contract:htTokenAddress Spender:testAddress2];
     NSLog(@"查询testAddress1授权给testAddress2的授权额度 : %@", allowance1);
 
-//    /** eth网络跨链转入nerve，这里有两种情况，一种是转主资产eth，另一种是转token **/
-//    // 第一种，转主资产eth，0.01个，from testAddress1 to nerveAddress
-//    NSString *crossTxWithEth = [NerveTools crossOutWithETH:web3 PriKey:testPrivateKey MultyContract:multyAddress To:nerveAddress Value:@"0.01"];
+    /** eth网络跨链转入nerve，这里有两种情况，一种是转主资产eth，另一种是转token **/
+    // 第一种，转主资产eth，0.01个，from testAddress1 to nerveAddress
+    NSString *crossTxWithEth = [NerveTools crossOutWithETH:web3 PriKey:testPrivateKey MultyContract:multyAddress To:nerveAddress Value:@"0.01"];
 //    NSLog(@"广播eth跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:crossTxWithEth]);
-//
-//    // 第二种，转token资产HT，2个，from testAddress1 to nerveAddress
-//    NSString *crossTxWithERC20 = [NerveTools crossOutWithERC20:web3 PriKey:testPrivateKey MultyContract:multyAddress ERC20Contract:htTokenAddress ERC20Decimals:18 To:nerveAddress Value:@"2"];
+
+    // 第二种，转token资产HT，2个，from testAddress1 to nerveAddress
+    NSString *crossTxWithERC20 = [NerveTools crossOutWithERC20:web3 PriKey:testPrivateKey MultyContract:multyAddress ERC20Contract:htTokenAddress ERC20Decimals:18 To:nerveAddress Value:@"2"];
 //    NSLog(@"广播token跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:crossTxWithERC20]);
-//
-//    /** Nabox 插件接收应用传递的交易原始参数，组装交易 **/
-//    NSString *tx = [NerveTools sendRawTransaction:web3 PriKey:testPrivateKey nonce:@"84" gasPrice:@"10000000000" gas:@"22000" To:testAddress2 Value:@"" data:@""];
+
+    /** Nabox 插件接收应用传递的交易原始参数，组装交易 **/
+    NSString *tx = [NerveTools sendRawTransaction:web3 PriKey:testPrivateKey nonce:@"84" gasPrice:@"10000000000" gas:@"22000" To:testAddress2 Value:@"" data:@""];
 //    NSLog(@"Nabox广播eth交易 : %@", [web3.eth sendSignedTransaction:tx]);
     
     
@@ -130,6 +131,7 @@
     signature = [[data parseHexData] signWithPrivateKeyData:[_privKey parseHexData]];
     NSString *asd1 = [NSString stringWithFormat:@"0x%@", [signature dataDirectString]];
     NSLog(@"signature : %@", asd1);
+    NSLog(@"signature : %@", [NerveTools ethSign:_privKey Message:data]);
 
 
     /** eth_personal_sign **/
@@ -148,19 +150,23 @@
     */
     NSString *personalMsg = @"hello world";
     NSDictionary *asd2 = [web3.eth.accounts sign:personalMsg WithPrivateKey:_privKey];
-    NSLog(@"personal_sign : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign1 : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign1 : %@", [NerveTools personalSign:_privKey Message:personalMsg]);
     
     personalMsg = @"0xd86cf03a175cdaf761d2eda25a98ce404d96ce0db2a4f25b25d46d604c7cdc5c";
     asd2 = [web3.eth.accounts sign:personalMsg WithPrivateKey:_privKey];
-    NSLog(@"personal_sign : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign2 : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign2 : %@", [NerveTools personalSign:_privKey Message:personalMsg]);
     
     personalMsg = @"hello";
     asd2 = [web3.eth.accounts sign:personalMsg WithPrivateKey:_privKey];
-    NSLog(@"personal_sign : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign3 : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign3 : %@", [NerveTools personalSign:_privKey Message:personalMsg]);
     
     personalMsg = @"d86cf03a175cdaf7";
     asd2 = [web3.eth.accounts sign:personalMsg WithPrivateKey:_privKey];
-    NSLog(@"personal_sign : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign4 : %@", [asd2 valueForKey:@"signature"]);
+    NSLog(@"personal_sign4 : %@", [NerveTools personalSign:_privKey Message:personalMsg]);
 
     /** signTypedDataV4 **/
     SwiftClass *sc = [[SwiftClass alloc] init];
@@ -170,6 +176,8 @@
     signature = [[str2 parseHexData] signWithPrivateKeyData:[_privKey parseHexData]];
     asd1 = [NSString stringWithFormat:@"0x%@", [signature dataDirectString]];
     NSLog(@"signTypedDataV4 signature : %@", asd1);
+    NSLog(@"signTypedDataV4 signature : %@", [NerveTools signTypedDataV4:_privKey Message:msg]);
+    // 0x255aeb286e4b55f13aceec4084cb479cf6b13993154e8423e20decdaeed4c6a64be9bd3748131a7a3d1e636dfbecab70cef1ffe18dc590a77a9a6c26c56199801c
     return YES;
 }
 

@@ -66,6 +66,7 @@ static BigNumber *minApprove = nil;
     tx.to = [_contract removePrefix0x];
     tx.data = [tokenContract encodeABI:@"approve(address,uint256)" WithArgument:@[_to, [web3.utils parseUnits:_value WithUnit:_decimals]]];
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
+    NSLog(signTx.description);
     return [signTx valueForKey:@"rawTransaction"];
 }
 

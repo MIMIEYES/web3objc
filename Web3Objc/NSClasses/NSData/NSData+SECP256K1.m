@@ -34,23 +34,23 @@
     }
     
     secp256k1_context_destroy(context);
-    siga[64] = recId + 27; //주석처리해도 될듯_PK
+    siga[64] = recId + 27;
     
     NSMutableData *data = [[NSMutableData alloc] init];
     
 //    [data appendBytes:&siga[64] length:sizeof(unsigned char)];
-    [data appendBytes:siga length:sizeof(unsigned char) * 64];
+    [data appendBytes:siga length:sizeof(unsigned char) * 65];
     
     free(siga);
-    unsigned char v = 0;
-    if (recId == 0) {
-        [data appendBytes:&v length:sizeof(unsigned char)];
-    } else if (recId == 1) {
-        v = 1;
-        [data appendBytes:&v length:sizeof(unsigned char)];
-    } else {
-        return nil;
-    }
+//    unsigned char v = 0;
+//    if (recId == 0) {
+//        [data appendBytes:&v length:sizeof(unsigned char)];
+//    } else if (recId == 1) {
+//        v = 1;
+//        [data appendBytes:&v length:sizeof(unsigned char)];
+//    } else {
+//        return nil;
+//    }
     
     return data;
 }

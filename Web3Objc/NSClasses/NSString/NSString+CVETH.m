@@ -229,4 +229,29 @@ static const int8_t base58map[] = {
     NSRange r = [newStr rangeOfCharacterFromSet: nonNumbers];
     return r.location == NSNotFound && newStr.length > 0;
 }
+- (BOOL) isHex
+{
+    NSString *str = [self removePrefix0x];
+    const char *chars = [str UTF8String];
+    int i = 0;
+    NSUInteger len = str.length;
+
+    while (i < len) {
+        if (hex(chars[i++]) == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int hex( char ch ) //判断字符ch是否16进制字符，是返回1，否返回0
+{
+    if ( ch >='0' && ch <='9' ) //属于0-9集合，返回是
+        return 1;
+    if ( ch >='A' && ch <='F' ) //属于A-F集合，返回是
+        return 1;
+    if ( ch >='a' && ch <='f' ) //属于a-f集合，返回是
+        return 1;
+    return 0; //否则，返回不是
+}
 @end

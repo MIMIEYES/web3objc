@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) isAllDigits;
 -(NSString *)trim;
 -(NSData *)base58ToData;
+- (BOOL) isHex;
 @end
 
 NS_ASSUME_NONNULL_END

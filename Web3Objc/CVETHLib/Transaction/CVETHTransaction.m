@@ -91,10 +91,10 @@
     //    int value = *(int*)([tmpv bytes]) + 35 + (1 * 2);
     int value = *(int*)([tmpv bytes]);
     NSDecimalNumber *vNum = (NSDecimalNumber *)[NSDecimalNumber numberWithInt:value];
-    NSDecimalNumber *adding = [NSDecimalNumber decimalNumberWithString:chainID];
-    adding = [adding decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"2"]];
-    adding = [adding decimalNumberByAdding:[NSDecimalNumber decimalNumberWithString:@"35"]];
-    vNum = [vNum decimalNumberByAdding:adding];
+//    NSDecimalNumber *adding = [NSDecimalNumber decimalNumberWithString:chainID];
+//    adding = [adding decimalNumberByMultiplyingBy:[NSDecimalNumber decimalNumberWithString:@"2"]];
+//    adding = [adding decimalNumberByAdding:[NSDecimalNumber decimalNumberWithString:@"35"]];
+//    vNum = [vNum decimalNumberByAdding:adding];
     NSString *vStr = [NSNumberFormatter
                       localizedStringFromNumber:vNum
                       numberStyle:NSNumberFormatterNoStyle];

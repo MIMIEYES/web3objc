@@ -1,0 +1,6 @@
+module Pods_Web3Objc {
+  umbrella header "Pods-Web3Objc-umbrella.h"
+
+  export *
+  module * { export * }
+}

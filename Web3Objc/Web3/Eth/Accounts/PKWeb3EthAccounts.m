@@ -26,13 +26,13 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
 }
 -(NSDictionary *)signTransaction:(CVETHTransaction *)_tx WithPrivateKey:(NSString *)_privateKey
 {
-    NSString *messageHash = [[[_tx hashForSign] dataDirectString] addPrefix0x];
+//    NSString *messageHash = [[[_tx hashForSign] dataDirectString] addPrefix0x];
     NSString *rawTransaction = [_tx getSignTX:[_privateKey removePrefix0x]];
     NSString *transactionHash = [[[[rawTransaction parseHexData] keccak256] dataDirectString] addPrefix0x];
     NSString *v = [[[_tx getSignedV] dataDirectString] addPrefix0x];
     NSString *r = [[[_tx getSignedR] dataDirectString] addPrefix0x];
     NSString *s = [[[_tx getSignedS] dataDirectString] addPrefix0x];
-    return @{@"messageHash":messageHash, @"v":v, @"r":r, @"s":s, @"rawTransaction":rawTransaction, @"transactionHash":transactionHash};
+    return @{@"messageHash":@"", @"v":v, @"r":r, @"s":s, @"rawTransaction":rawTransaction, @"transactionHash":transactionHash};
 }
 -(NSString *)recoverTransaction:(NSString *)_rawTx
 {
@@ -80,8 +80,18 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
 }
 -(NSString *)hashMessage:(NSString *)_string
 {
-    NSString *message = [NSString stringWithFormat:@"%@%lu%@", HASH_MESSAGE_PREFIX, (unsigned long)_string.length, _string];
-    return [[message keccak256HashString] addPrefix0x];
+    NSData *signMsgData;
+    if (![_string isHex]) {
+        signMsgData = [_string dataUsingEncoding:NSUTF8StringEncoding];
+    } else {
+        signMsgData = [_string parseHexData];
+    }
+    NSString *message = [NSString stringWithFormat:@"%@%lu", HASH_MESSAGE_PREFIX, (unsigned long)signMsgData.length];
+    NSMutableData *encodData = [NSMutableData dataWithData:[message dataUsingEncoding:NSUTF8StringEncoding]];
+    [encodData appendData:signMsgData];
+    NSData *hashData = [encodData keccak256];
+    NSString *hashString = [hashData dataDirectString];
+    return hashString;
 }
 -(NSDictionary *)sign:(NSString *)_message WithPrivateKey:(NSString *)_privateKey
 {
@@ -90,7 +100,7 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
     
     NSData *tmpv = [NSData dataWithBytes:&tempSignatureData.bytes[64] length:1];
     int value = *(int*)([tmpv bytes]);
-    NSDecimalNumber *vNum = (NSDecimalNumber *)[NSDecimalNumber numberWithInt:value + 27];
+    NSDecimalNumber *vNum = (NSDecimalNumber *)[NSDecimalNumber numberWithInt:value];
     NSString *vStr = [NSNumberFormatter
                       localizedStringFromNumber:vNum
                       numberStyle:NSNumberFormatterNoStyle];
@@ -120,15 +130,5 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
     
     NSData *pubKey = [[hashMessage parseHexData] getPubKeyDataFromMessageWithSig:sig];
     return [CVETHWallet getWalletAddressFromPublicKey:pubKey];
-}
--(NSDictionary *)encrypt:(NSString *)_privateKey WithPassword:(NSString *)_password
-{
-    return [CVETHKeyStore encryptToKeyStoreWithPrivKey:[_privateKey removePrefix0x] Password:_password];
-}
--(NSDictionary *)decrypt:(NSDictionary *)_jsonDic WithPassword:(NSString *)_password
-{
-    NSString *privKey = [[CVETHKeyStore decryptKeyStore:_jsonDic Password:_password] addPrefix0x];
-    NSString *address = [self privateKeyToAccount:privKey];
-    return @{@"address":address, @"privateKey":privKey};
 }
 @end

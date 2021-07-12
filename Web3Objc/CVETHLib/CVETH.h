@@ -11,7 +11,6 @@
 #import "CVETHTransaction.h"
 #import "CVETHJsonRPC.h"
 #import "CVETHWallet.h"
-#import "CVETHKeyStore.h"
 
 #import "NSDecimalNumber+MOD.h"
 

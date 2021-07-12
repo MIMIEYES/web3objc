@@ -20,8 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)hashMessage:(NSString *)_string;
 -(NSDictionary *)sign:(NSString *)_message WithPrivateKey:(NSString *)_privateKey;
 -(NSString *)recover:(NSString *)_message WithSignature:(NSString *)_signature;
--(NSDictionary *)encrypt:(NSString *)_privateKey WithPassword:(NSString *)_password;
--(NSDictionary *)decrypt:(NSDictionary *)_jsonDic WithPassword:(NSString *)_password;
 
 @end
 

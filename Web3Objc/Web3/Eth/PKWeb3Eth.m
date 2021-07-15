@@ -68,6 +68,11 @@
     }
     return result;
 }
+-(NSDictionary *)sendSignedRawTransaction:(NSString *)_signedTx
+{
+    NSDictionary *resultData = [CVETHJsonRPC sendRawTransaction:[_signedTx addPrefix0x]];
+    return resultData;
+}
 -(NSDictionary *)signedTransaction:(CVETHTransaction *)_tx WithPrivateKey:(NSString *)_privateKey
 {
 //    NSString *messageHash = [[[_tx hashForSign] dataDirectString] addPrefix0x];

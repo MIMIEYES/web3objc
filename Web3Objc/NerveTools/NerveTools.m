@@ -156,7 +156,7 @@ static PKWeb3EthAccounts *accounts = nil;
     return [signTx valueForKey:@"rawTransaction"];
 }
 
-+ (NSString *)sendRawTransaction: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey nonce: (NSString *)_nonce gasPrice: (NSString *)_gasPrice gas: (NSString *)_gas To: (NSString *)_to Value: (NSString *)_value  data: (NSString *)_data
++ (NSDictionary *)sendRawTransaction: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey nonce: (NSString *)_nonce gasPrice: (NSString *)_gasPrice gas: (NSString *)_gas To: (NSString *)_to Value: (NSString *)_value  data: (NSString *)_data
 {
     CVETHTransaction *tx = [[CVETHTransaction alloc] init];
     if (_nonce == nil || [_nonce isEqualToString:@""]) {
@@ -172,10 +172,13 @@ static PKWeb3EthAccounts *accounts = nil;
     }
     tx.gasLimit = [web3.utils numberToHex:_gas];
     tx.to = [_to removePrefix0x];
+    if (_value == nil || [_value isEqualToString:@""]) {
+        _value = @"0";
+    }
     tx.value = [web3.utils numberToHex:_value];
     tx.data = _data;
     NSDictionary *signTx = [web3.eth.accounts signTransaction:tx WithPrivateKey:_priKey];
-    return [signTx valueForKey:@"rawTransaction"];
+    return [web3.eth sendSignedRawTransaction:[signTx valueForKey:@"rawTransaction"]];
 }
 
 + (NSString *)ethSign: (NSString *)_priKey Message: (NSString *)_message

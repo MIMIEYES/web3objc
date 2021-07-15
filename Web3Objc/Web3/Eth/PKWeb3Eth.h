@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)getBalance:(NSString *)_address;
 -(NSString *)getTranactionCount:(NSString *)_address;
 -(NSString *)sendSignedTransaction:(NSString *)_signedTx;
+-(NSDictionary *)sendSignedRawTransaction:(NSString *)_signedTx;
 -(NSDictionary *)signedTransaction:(CVETHTransaction *)_tx WithPrivateKey:(NSString *)_privateKey;
 -(NSString *)call:(CVETHTransaction *)_tx;
 -(NSString *)validateCallFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;

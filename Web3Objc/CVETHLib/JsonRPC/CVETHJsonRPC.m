@@ -79,13 +79,13 @@
     return [self getJsonRPCData:@"eth_gasPrice" WithParams:@[]];
 }
 
-+(void)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress GasPrice:(NSString *)_gasPrice Amount:(NSString *)_amount Data:(NSString *)_data UseIndicator:(BOOL)_useIndocator completion:(void (^)(NSDictionary *successResult))completion
++(void)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress Amount:(NSString *)_amount Data:(NSString *)_data UseIndicator:(BOOL)_useIndocator completion:(void (^)(NSDictionary *successResult))completion
 {
     if (_useIndocator) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ACTIVITY_INDICATOR_START" object:nil userInfo:nil];
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-        NSDictionary *successResult = [self estimateGasFrom:_fromAddress To:_toAddress GasPrice:_gasPrice Amount:_amount Data:_data];
+        NSDictionary *successResult = [self estimateGasFrom:_fromAddress To:_toAddress Amount:_amount Data:_data];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_useIndocator) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ACTIVITY_INDICATOR_STOP" object:nil userInfo:nil];
@@ -95,9 +95,9 @@
         });
     });
 }
-+(NSDictionary *)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress GasPrice:(NSString *)_gasPrice Amount:(NSString *)_amount Data:(NSString *)_data
++(NSDictionary *)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress Amount:(NSString *)_amount Data:(NSString *)_data
 {
-    NSDictionary *paramDic = @{@"data":_data,@"from":_fromAddress,@"gasPrice":_gasPrice,@"to":_toAddress,@"value":_amount};
+    NSDictionary *paramDic = @{@"data":_data,@"from":_fromAddress,@"to":_toAddress,@"value":_amount};
     return [self getJsonRPCData:@"eth_estimateGas" WithParams:@[paramDic]];
 }
 

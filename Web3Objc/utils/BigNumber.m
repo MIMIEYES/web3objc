@@ -42,6 +42,7 @@ static BigNumber *ConstantMaxSafeUnsignedInteger = nil;
 static BigNumber *ConstantMaxSafeSignedInteger = nil;
 
 static RegEx *RegexDecimal = nil;
+static RegEx *RegexFloat = nil;
 static RegEx *RegexHex = nil;
 
 
@@ -57,6 +58,7 @@ static RegEx *RegexHex = nil;
         
         // Make sure we initialize these before creating the constants below
         RegexDecimal = [RegEx regExWithPattern:@"^-?[0-9]*$"];
+        RegexFloat = [RegEx regExWithPattern:@"^-?[0-9]+\\.[0-9]+$"];
         RegexHex = [RegEx regExWithPattern:@"^-?0x[0-9A-Fa-f]*$"];
 
         ConstantNegativeOne = [BigNumber bigNumberWithInteger:-1];
@@ -87,7 +89,9 @@ static RegEx *RegexHex = nil;
 }
 
 + (instancetype)bigNumberWithDecimalString:(NSString *)decimalString {
-    if (![RegexDecimal matchesExactly:decimalString]) { return nil; }
+    if (![RegexDecimal matchesExactly:decimalString] && ![RegexFloat matchesExactly:decimalString]) {
+        return nil;
+    }
 
     BigNumber *bigNumber = [[BigNumber alloc] init];
     if (self) {

@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* eth_estimateGas -> result
  */
-+(void)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress GasPrice:(NSString *)_gasPrice Amount:(NSString *)_amount Data:(NSString *)_data UseIndicator:(BOOL)_useIndocator completion:(void (^)(NSDictionary *successResult))completion;
-+(NSDictionary *)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress GasPrice:(NSString *)_gasPrice Amount:(NSString *)_amount Data:(NSString *)_data;
++(void)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress Amount:(NSString *)_amount Data:(NSString *)_data UseIndicator:(BOOL)_useIndocator completion:(void (^)(NSDictionary *successResult))completion;
++(NSDictionary *)estimateGasFrom:(NSString *)_fromAddress To:(NSString *)_toAddress Amount:(NSString *)_amount Data:(NSString *)_data;
 
 /* eth_sendRawTransaction -> result
  */

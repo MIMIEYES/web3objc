@@ -19,6 +19,9 @@
 
 + (NSString *)getERC20Allowance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract Spender: (NSString *)_spender;
 
+/// 查询是否授权
++ (BOOL)needERC20Allowance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract Spender: (NSString *)_spender;
+
 + (NSString *)getERC20Balance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract;
 
 + (NSString *)crossOutWithETH: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey MultyContract: (NSString *)_contract To: (NSString *)_to Value: (NSString *)_value;
@@ -32,6 +35,17 @@
 + (NSString *)personalSign: (NSString *)_priKey Message: (NSString *)_message;
 
 + (NSString *)signTypedDataV4: (NSString *)_priKey Message: (NSString *)_message;
+
++ (NSString *)getPrivatekeyByMnemonic: (NSString *)_mnemonic;
+
++(NSString *)formatUnits:(NSString *)value WithUnit:(NSUInteger)_unit;
+
++(NSString *)parseUnits:(NSString *)value WithUnit:(NSUInteger)_unit;
+
++ (NSString *)getGasLimit_sendERC20: (PKWeb3Objc *) web3 From: (NSString *)_from ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value;
+
+/// 用于NULS DAPP
++ (NSString *)signMessage: (NSString *)_priKey Message: (NSString *)_message;
 
 @end
 

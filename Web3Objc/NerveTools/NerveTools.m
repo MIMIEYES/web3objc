@@ -8,6 +8,7 @@
 
 #import "NerveTools.h"
 #import "PKWeb3Objc.h"
+#import "BTCKey.h"
 #import "Web3Objc-Swift.h"
 
 @implementation NerveTools
@@ -18,6 +19,7 @@ static NSString *zeroAddress = nil;
 static BigNumber *minApprove = nil;
 static SwiftClass *sc = nil;
 static PKWeb3EthAccounts *accounts = nil;
+static PKWeb3Utils *utils = nil;
 
 + (void)initialize {
     static dispatch_once_t onceToken;
@@ -28,6 +30,7 @@ static PKWeb3EthAccounts *accounts = nil;
         minApprove = [BigNumber bigNumberWithDecimalString:@"39600000000000000000000000000"];
         sc = [[SwiftClass alloc] init];
         accounts = [[PKWeb3EthAccounts alloc] init];
+        utils = [[PKWeb3Utils alloc] init];
     });
 }
 
@@ -78,6 +81,18 @@ static PKWeb3EthAccounts *accounts = nil;
 {
     PKWeb3EthContract *tokenContract = [web3.eth.contract initWithAddress:_contract AbiJsonStr:tokenContractAbi];
     return [tokenContract call:@"allowance(address,address)" WithArgument:@[_owner,_spender]];
+}
+
+
++ (BOOL)needERC20Allowance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract Spender: (NSString *)_spender{
+//    NSLog(@"decimalString = %@",[NerveTools getERC20Allowance:web3 Owner:_owner ERC20Contract:_contract Spender:_spender]);
+    BigNumber *currentAllowance = [BigNumber bigNumberWithDecimalString:[NerveTools getERC20Allowance:web3 Owner:_owner ERC20Contract:_contract Spender:_spender]];
+    if ([currentAllowance lessThan:minApprove]) {
+        NSLog(@"授权额度不足，请先授权，当前剩余额度");
+        //@TODO throw error
+        return YES;
+    }
+    return NO;
 }
 
 + (NSString *)getERC20Balance: (PKWeb3Objc *) web3 Owner: (NSString *)_owner ERC20Contract: (NSString *)_contract
@@ -203,6 +218,52 @@ static PKWeb3EthAccounts *accounts = nil;
     NSString *str2 = [sc signTypedDataV4WithMessage:_message];
     NSData *signature = [[str2 parseHexData] signWithPrivateKeyData:[_priKey parseHexData]];
     return [NSString stringWithFormat:@"0x%@", [signature dataDirectString]];
+}
+
++ (NSString *)getPrivatekeyByMnemonic: (NSString *)_mnemonic
+{
+    NSString *prikey = [sc getPrivatekeyByMnemonicWithMnemonic:_mnemonic];
+    return prikey;
+}
+
++(NSString *)formatUnits:(NSString *)value WithUnit:(NSUInteger)_unit
+{
+    return [utils formatUnits:value WithUnit:_unit];
+}
+
++(NSString *)parseUnits:(NSString *)value WithUnit:(NSUInteger)_unit
+{
+    return [utils parseUnits:value WithUnit:_unit];
+}
+
++ (NSString *)getGasLimit_sendERC20: (PKWeb3Objc *) web3 From: (NSString *)_from ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value
+{
+    PKWeb3EthContract *tokenContract = [web3.eth.contract initWithAddress:_contract AbiJsonStr:tokenContractAbi];
+    
+    NSString *from = _from;
+    CVETHTransaction *tx = [[CVETHTransaction alloc] init];
+//    tx.nonce = [web3.utils numberToHex:[web3.eth getTranactionCount:from]];
+//    tx.gasPrice = [web3.utils numberToHex:[web3.eth getGasPrice]];
+//    tx.gasLimit = [web3.utils numberToHex:@"150000"];
+    tx.to = [_contract removePrefix0x];
+    tx.data = [tokenContract encodeABI:@"transfer(address,uint256)" WithArgument:@[_to, [web3.utils parseUnits:_value WithUnit:_decimals]]];
+    NSString *estimateGas = [web3.eth estimateGasFrom:from TX:tx];
+    if(!estimateGas) {
+        NSLog(@"估算gas异常");
+        return @"";
+    }
+    return estimateGas;
+}
+
+/// 用于NULS DAPP
++ (NSString *)signMessage: (NSString *)_priKey Message: (NSString *)_message {
+    NSData *encodeMsg;
+    if (![_message isHex]) {
+        encodeMsg = [_message dataUsingEncoding:NSUTF8StringEncoding];
+    } else {
+        encodeMsg = [_message parseHexData];
+    }
+    return [[encodeMsg signDataEncodeToDER:[_priKey parseHexData]] dataDirectString];
 }
 
 @end

@@ -119,7 +119,10 @@ static NSUInteger etherDecimals = 18;
     if (!decimal || decimal.length == 0) { decimal = @"0"; }
     if (![RegexNumbersOnly matchesExactly:decimal]) { return nil; }
     
-    if (decimal.length > _unit) { return nil; }
+    if (decimal.length > _unit) {
+//        return nil;
+        decimal = [decimal substringToIndex:_unit];
+    }
     while (decimal.length < _unit) { decimal = [decimal stringByAppendingString:@"0"]; }
     
     NSString *wei = [whole stringByAppendingString:decimal];

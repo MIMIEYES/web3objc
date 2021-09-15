@@ -14,5 +14,10 @@ import WalletCore
     func signTypedDataV4(message : String) -> String {
         let hash = EthereumAbi.encodeTyped(messageJson: message);
         return hash.hexString;
+    };
+    
+    func getPrivatekeyByMnemonic(mnemonic: String) -> String {
+        let hh = HDWallet.init(mnemonic: mnemonic, passphrase: "");
+        return hh?.getKeyForCoin(coin: CoinType.ethereum).data.hexString ?? "";
     }
 }

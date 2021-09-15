@@ -50,7 +50,8 @@
     if (encodedData == nil) {
         return nil;
     }
-    NSString *result = [[CVETHJsonRPC ethCallFrom:@"" To:[contractAddress addPrefix0x] Gas:@"" GasPrice:@"" Value:@"" Data:encodedData] valueForKey:@"result"];
+    NSDictionary *dic = [CVETHJsonRPC ethCallFrom:@"" To:[contractAddress addPrefix0x] Gas:@"" GasPrice:@"" Value:@"" Data:encodedData];
+    NSString *result = [dic valueForKey:@"result"];
     if (result == nil || [result isEqualToString:@""]) {
         return nil;
     }

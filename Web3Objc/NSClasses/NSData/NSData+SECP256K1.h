@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSData (SECP256K1)
 - (NSData *) signWithPrivateKeyData:(NSData *)privateKeyData;
 - (NSData *) getPubKeyDataFromMessageWithSig:(NSData *)_sig;
+- (NSData *) signDataEncodeToDER:(NSData *)privateKeyData;
 //- (int)verifySigningWithPublicKeyData:(NSData *)publicKeyData;
 @end
 

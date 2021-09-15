@@ -55,6 +55,35 @@
     return data;
 }
 
+- (NSData *)signDataEncodeToDER:(NSData *)privateKeyData
+{
+    secp256k1_context *context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    
+    const unsigned char *prvKey = (const unsigned char *)privateKeyData.bytes;
+    const unsigned char *msg = (const unsigned char *)self.bytes;
+    
+    unsigned char *siga = malloc(64);
+    secp256k1_ecdsa_signature sig;
+    int result = secp256k1_ecdsa_sign(context, &sig, msg, prvKey, NULL, NULL);
+    
+    result = secp256k1_ecdsa_signature_serialize_compact(context, siga, &sig);
+    
+    if (result != 1) {
+        return nil;
+    }
+    
+    size_t i = 72;
+    unsigned char *output = malloc(i);
+    secp256k1_ecdsa_signature_serialize_der(context, output, &i, &sig);
+    
+    secp256k1_context_destroy(context);
+    
+    NSMutableData *data = [NSMutableData dataWithBytes:output length:i];
+    free(output);
+    free(siga);
+    return data;
+}
+
 - (NSData *) getPubKeyDataFromMessageWithSig:(NSData *)_sig;
 {
     secp256k1_context *context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);

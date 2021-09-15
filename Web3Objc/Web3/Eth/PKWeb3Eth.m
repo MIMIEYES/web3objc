@@ -116,7 +116,7 @@
 }
 -(NSString *)estimateGasFrom:(NSString *)_from TX:(CVETHTransaction *)_tx;
 {
-    NSString *result = [[CVETHJsonRPC estimateGasFrom:[_from addPrefix0x] To:[_tx.to addPrefix0x] GasPrice:[_tx.gasPrice addPrefix0x] Amount:_tx.value Data:[_tx.data addPrefix0x]] valueForKey:@"result"];
+    NSString *result = [[CVETHJsonRPC estimateGasFrom:[_from addPrefix0x] To:[_tx.to addPrefix0x] Amount:_tx.value Data:[_tx.data addPrefix0x]] valueForKey:@"result"];
     if (result == nil || [result isEqualToString:@""]) {
         return nil;
     }

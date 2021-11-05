@@ -11,6 +11,33 @@ import Foundation
 
 public final class EthereumAbi {
 
+    public static func encode(fn: EthereumAbiFunction) -> Data {
+        return TWDataNSData(TWEthereumAbiEncode(fn.rawValue))
+    }
+
+    public static func decodeOutput(fn: EthereumAbiFunction, encoded: Data) -> Bool {
+        let encodedData = TWDataCreateWithNSData(encoded)
+        defer {
+            TWDataDelete(encodedData)
+        }
+        return TWEthereumAbiDecodeOutput(fn.rawValue, encodedData)
+    }
+
+    public static func decodeCall(data: Data, abi: String) -> String? {
+        let dataData = TWDataCreateWithNSData(data)
+        defer {
+            TWDataDelete(dataData)
+        }
+        let abiString = TWStringCreateWithNSString(abi)
+        defer {
+            TWStringDelete(abiString)
+        }
+        guard let result = TWEthereumAbiDecodeCall(dataData, abiString) else {
+            return nil
+        }
+        return TWStringNSString(result)
+    }
+
     public static func encodeTyped(messageJson: String) -> Data {
         let messageJsonString = TWStringCreateWithNSString(messageJson)
         defer {

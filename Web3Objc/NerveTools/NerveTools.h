@@ -47,6 +47,19 @@
 /// 用于NULS DAPP
 + (NSString *)signMessage: (NSString *)_priKey Message: (NSString *)_message;
 
++(NSString *)formatEther:(NSString *)wei;
+
++(NSString *)parseEther:(NSString *)etherString;
+
+/// token资产的简称
++ (NSString *)getERC20Symbol: (PKWeb3Objc *) web3 ERC20Contract: (NSString *)_contract;
+
+/// token资产的名字
++ (NSString *)getERC20Name: (PKWeb3Objc *) web3 ERC20Contract: (NSString *)_contract;
+
+/// token资产的精度
++ (NSString *)getERC20Decimals: (PKWeb3Objc *) web3 ERC20Contract: (NSString *)_contract;
+
 @end
 
 

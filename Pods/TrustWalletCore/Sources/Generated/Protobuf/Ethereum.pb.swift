@@ -233,6 +233,9 @@ public struct TW_Ethereum_Proto_Transaction {
 }
 
 /// Input data necessary to create a signed transaction.
+/// Supported:
+/// - Legacy transaction, with legacy fee (pre-EIP1559; gas price, gas limit)
+/// - EIP1559 fee (transaction type: ?; max inclusion fee, max fee per gas)
 public struct TW_Ethereum_Proto_SigningInput {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -245,10 +248,19 @@ public struct TW_Ethereum_Proto_SigningInput {
   public var nonce: Data = Data()
 
   /// Gas price (256-bit number)
+  /// If > 0, legacy fee scheme is used; if 0, EIP1559 fee scheme is used
   public var gasPrice: Data = Data()
 
   /// Gas limit (256-bit number)
   public var gasLimit: Data = Data()
+
+  /// Maxinmum optional inclusion fee (aka tip) (256-bit number)
+  /// Used only for EIP1559 fee, disregarded for legacy
+  public var maxInclusionFeePerGas: Data = Data()
+
+  /// Maxinmum fee (256-bit number)
+  /// Used only for EIP1559 fee, disregarded for legacy
+  public var maxFeePerGas: Data = Data()
 
   /// Recipient's address.
   public var toAddress: String = String()
@@ -675,6 +687,8 @@ extension TW_Ethereum_Proto_SigningInput: SwiftProtobuf.Message, SwiftProtobuf._
     2: .same(proto: "nonce"),
     3: .standard(proto: "gas_price"),
     4: .standard(proto: "gas_limit"),
+    8: .standard(proto: "max_inclusion_fee_per_gas"),
+    9: .standard(proto: "max_fee_per_gas"),
     5: .standard(proto: "to_address"),
     6: .standard(proto: "private_key"),
     7: .same(proto: "transaction"),
@@ -693,6 +707,8 @@ extension TW_Ethereum_Proto_SigningInput: SwiftProtobuf.Message, SwiftProtobuf._
       case 5: try { try decoder.decodeSingularStringField(value: &self.toAddress) }()
       case 6: try { try decoder.decodeSingularBytesField(value: &self.privateKey) }()
       case 7: try { try decoder.decodeSingularMessageField(value: &self._transaction) }()
+      case 8: try { try decoder.decodeSingularBytesField(value: &self.maxInclusionFeePerGas) }()
+      case 9: try { try decoder.decodeSingularBytesField(value: &self.maxFeePerGas) }()
       default: break
       }
     }
@@ -720,6 +736,12 @@ extension TW_Ethereum_Proto_SigningInput: SwiftProtobuf.Message, SwiftProtobuf._
     if let v = self._transaction {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 7)
     }
+    if !self.maxInclusionFeePerGas.isEmpty {
+      try visitor.visitSingularBytesField(value: self.maxInclusionFeePerGas, fieldNumber: 8)
+    }
+    if !self.maxFeePerGas.isEmpty {
+      try visitor.visitSingularBytesField(value: self.maxFeePerGas, fieldNumber: 9)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -728,6 +750,8 @@ extension TW_Ethereum_Proto_SigningInput: SwiftProtobuf.Message, SwiftProtobuf._
     if lhs.nonce != rhs.nonce {return false}
     if lhs.gasPrice != rhs.gasPrice {return false}
     if lhs.gasLimit != rhs.gasLimit {return false}
+    if lhs.maxInclusionFeePerGas != rhs.maxInclusionFeePerGas {return false}
+    if lhs.maxFeePerGas != rhs.maxFeePerGas {return false}
     if lhs.toAddress != rhs.toAddress {return false}
     if lhs.privateKey != rhs.privateKey {return false}
     if lhs._transaction != rhs._transaction {return false}

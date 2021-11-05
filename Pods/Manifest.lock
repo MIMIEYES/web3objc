@@ -1,32 +1,44 @@
 PODS:
-  - RLP-ObjC (1.0.7)
+  - CBSecp256k1 (0.9.0)
+  - CoreBitcoin (0.6.8.1):
+    - ISO8601DateFormatter
+    - OpenSSL-Universal (= 1.0.1.16)
+  - ISO8601DateFormatter (0.8)
+  - OpenSSL-Universal (1.0.1.16)
   - secp256k1_ios (0.1.3)
   - SwiftProtobuf (1.17.0)
-  - TrustWalletCore (2.6.12):
-    - TrustWalletCore/Core (= 2.6.12)
-  - TrustWalletCore/Core (2.6.12):
+  - TrustWalletCore (2.6.17):
+    - TrustWalletCore/Core (= 2.6.17)
+  - TrustWalletCore/Core (2.6.17):
     - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.6.12):
+  - TrustWalletCore/Types (2.6.17):
     - SwiftProtobuf
 
 DEPENDENCIES:
-  - RLP-ObjC
+  - CBSecp256k1
+  - CoreBitcoin
   - secp256k1_ios
   - TrustWalletCore
 
 SPEC REPOS:
   trunk:
-    - RLP-ObjC
+    - CBSecp256k1
+    - CoreBitcoin
+    - ISO8601DateFormatter
+    - OpenSSL-Universal
     - secp256k1_ios
     - SwiftProtobuf
     - TrustWalletCore
 
 SPEC CHECKSUMS:
-  RLP-ObjC: d5b16b677587310d6439a57ba2b46c67b3adc7f9
+  CBSecp256k1: d8a1c651b1e5dd1c35867e968ab4e7fd2430e4de
+  CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
+  OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
   SwiftProtobuf: 9c85136c6ba74b0a1b84279dbf0f6db8efb714e0
-  TrustWalletCore: b6b3ada640a9e8bfaf3c4171a08ddd55b1162450
+  TrustWalletCore: 48472eb39dab56bc5a94e626b24160c88bfb1ebf
 
-PODFILE CHECKSUM: 00bf3effe3130b2454508eb520294d786df3ec00
+PODFILE CHECKSUM: 45c61b93891312e0cdc4e1188e25569c78f974ca
 
 COCOAPODS: 1.10.1

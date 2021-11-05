@@ -35,7 +35,6 @@ public enum Blockchain: UInt32, CaseIterable {
     case harmony = 25
     case near = 26
     case algorand = 27
-    case ton = 28
     case polkadot = 29
     case cardano = 30
     case neo = 31

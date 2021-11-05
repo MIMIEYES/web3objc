@@ -19,4 +19,7 @@ public enum EthereumChainID: UInt32, CaseIterable {
     case binanceSmartChain = 56
     case polygon = 137
     case wanchain = 888
+    case optimism = 10
+    case arbitrum = 42161
+    case heco = 128
 }

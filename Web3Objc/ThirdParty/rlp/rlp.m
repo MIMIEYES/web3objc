@@ -18,21 +18,21 @@ static size_t rlp_buf_length(id root) {
         NSData *rootData = root;
         rootLen = rootData.length;
         if (rootLen == 0
-            || (rootLen == 1 && ((uint8_t *)rootData.bytes)[0] < 0x7f)) {
+            || (rootLen == 1 && ((uint8_t *)rootData.bytes)[0] <= 0x7f)) {
             return 1;
         }
     } else if ([root isKindOfClass:[NSString class]]) {
         NSString *rootString = root;
         rootLen = rootString.length;
         if (rootLen == 0
-            || (rootLen == 1 && rootString.UTF8String[0] < 0x7f)) {
+            || (rootLen == 1 && rootString.UTF8String[0] <= 0x7f)) {
             return 1;
         }
     } else if ([root isKindOfClass:[NSValue class]]) {
         NSData *rootData = [NSData rlpFromNSValue:root];
         rootLen = rootData.length;
         if (rootLen == 0
-            || (rootLen == 1 && ((uint8_t *)rootData.bytes)[0] < 0x7f)) {
+            || (rootLen == 1 && ((uint8_t *)rootData.bytes)[0] <= 0x7f)) {
             return 1;
         }
     } else if ([root isKindOfClass:[NSArray class]]) {
@@ -56,7 +56,7 @@ static void _rlp_encode_buf(uint8_t *outBytes, const uint8_t *inBytes, size_t in
         *outBytes = 0x80;
         return;
     }
-    if (inLength == 1 && *inBytes < 0x7f) {
+    if (inLength == 1 && *inBytes <= 0x7f) {
         *outBytes = *inBytes;
         return;
     }

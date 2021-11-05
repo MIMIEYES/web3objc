@@ -15,6 +15,14 @@ public final class BitcoinScript {
         return TWBitcoinScriptEqual(lhs.rawValue, rhs.rawValue)
     }
 
+    public static func buildPayToPublicKey(pubkey: Data) -> BitcoinScript {
+        let pubkeyData = TWDataCreateWithNSData(pubkey)
+        defer {
+            TWDataDelete(pubkeyData)
+        }
+        return BitcoinScript(rawValue: TWBitcoinScriptBuildPayToPublicKey(pubkeyData))
+    }
+
     public static func buildPayToPublicKeyHash(hash: Data) -> BitcoinScript {
         let hashData = TWDataCreateWithNSData(hash)
         defer {

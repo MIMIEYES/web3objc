@@ -44,7 +44,6 @@ public enum CoinType: UInt32, CaseIterable {
     case xrp = 144
     case solana = 501
     case stellar = 148
-    case ton = 396
     case tezos = 1729
     case theta = 500
     case thunderToken = 1001
@@ -74,4 +73,7 @@ public enum CoinType: UInt32, CaseIterable {
     case polygon = 966
     case thorchain = 931
     case bluzelle = 483
+    case optimism = 10000070
+    case arbitrum = 10042221
+    case ecochain = 10000553
 }

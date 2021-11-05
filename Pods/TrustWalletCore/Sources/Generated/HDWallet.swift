@@ -11,14 +11,6 @@ import Foundation
 
 public final class HDWallet {
 
-    public static func isValid(mnemonic: String) -> Bool {
-        let mnemonicString = TWStringCreateWithNSString(mnemonic)
-        defer {
-            TWStringDelete(mnemonicString)
-        }
-        return TWHDWalletIsValid(mnemonicString)
-    }
-
     public static func getPublicKeyFromExtended(extended: String, coin: CoinType, derivationPath: String) -> PublicKey? {
         let extendedString = TWStringCreateWithNSString(extended)
         defer {
@@ -42,21 +34,28 @@ public final class HDWallet {
         return TWStringNSString(TWHDWalletMnemonic(rawValue))
     }
 
+    public var entropy: Data {
+        return TWDataNSData(TWHDWalletEntropy(rawValue))
+    }
+
     let rawValue: OpaquePointer
 
     init(rawValue: OpaquePointer) {
         self.rawValue = rawValue
     }
 
-    public init(strength: Int32, passphrase: String) {
+    public init?(strength: Int32, passphrase: String) {
         let passphraseString = TWStringCreateWithNSString(passphrase)
         defer {
             TWStringDelete(passphraseString)
         }
-        rawValue = TWHDWalletCreate(Int32(strength), passphraseString)
+        guard let rawValue = TWHDWalletCreate(Int32(strength), passphraseString) else {
+            return nil
+        }
+        self.rawValue = rawValue
     }
 
-    public init(mnemonic: String, passphrase: String) {
+    public init?(mnemonic: String, passphrase: String) {
         let mnemonicString = TWStringCreateWithNSString(mnemonic)
         defer {
             TWStringDelete(mnemonicString)
@@ -65,19 +64,25 @@ public final class HDWallet {
         defer {
             TWStringDelete(passphraseString)
         }
-        rawValue = TWHDWalletCreateWithMnemonic(mnemonicString, passphraseString)
+        guard let rawValue = TWHDWalletCreateWithMnemonic(mnemonicString, passphraseString) else {
+            return nil
+        }
+        self.rawValue = rawValue
     }
 
-    public init(data: Data, passphrase: String) {
-        let dataData = TWDataCreateWithNSData(data)
+    public init?(entropy: Data, passphrase: String) {
+        let entropyData = TWDataCreateWithNSData(entropy)
         defer {
-            TWDataDelete(dataData)
+            TWDataDelete(entropyData)
         }
         let passphraseString = TWStringCreateWithNSString(passphrase)
         defer {
             TWStringDelete(passphraseString)
         }
-        rawValue = TWHDWalletCreateWithData(dataData, passphraseString)
+        guard let rawValue = TWHDWalletCreateWithEntropy(entropyData, passphraseString) else {
+            return nil
+        }
+        self.rawValue = rawValue
     }
 
     deinit {

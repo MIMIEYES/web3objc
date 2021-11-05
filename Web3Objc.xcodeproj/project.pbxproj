@@ -42,6 +42,8 @@
 		65891FCB2463F65B00E11F7E /* PKWeb3EthContract.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCA2463F65B00E11F7E /* PKWeb3EthContract.m */; };
 		65891FCE2463F66900E11F7E /* PKWeb3EthAccounts.m in Sources */ = {isa = PBXBuildFile; fileRef = 65891FCD2463F66900E11F7E /* PKWeb3EthAccounts.m */; };
 		658ACDB9246B860300769DFA /* PKWeb3Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 658ACDB8246B860300769DFA /* PKWeb3Crypto.m */; };
+		E32218A3270442950036214D /* rlp.m in Sources */ = {isa = PBXBuildFile; fileRef = E32218A0270442940036214D /* rlp.m */; };
+		E32218A4270442950036214D /* NSData+RLP.m in Sources */ = {isa = PBXBuildFile; fileRef = E32218A2270442940036214D /* NSData+RLP.m */; };
 		E33A27912604AAB9004CBE35 /* NerveTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E33A27902604AAB9004CBE35 /* NerveTools.m */; };
 		E3407E7B26034DB1001D5BCB /* mpi.c in Sources */ = {isa = PBXBuildFile; fileRef = E3407E5B26034DB1001D5BCB /* mpi.c */; };
 		E3407E8026034DB1001D5BCB /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6526034DB1001D5BCB /* BigNumber.m */; };
@@ -176,6 +178,10 @@
 		658ACDB8246B860300769DFA /* PKWeb3Crypto.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PKWeb3Crypto.m; sourceTree = "<group>"; };
 		A98BF9BFF7BEBE031F615939 /* Pods-Web3Objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.release.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.release.xcconfig"; sourceTree = "<group>"; };
 		D1CBF372FC1AAAEA8FC877F0 /* Pods-Web3Objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Objc.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Objc/Pods-Web3Objc.debug.xcconfig"; sourceTree = "<group>"; };
+		E322189F270442940036214D /* rlp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rlp.h; sourceTree = "<group>"; };
+		E32218A0270442940036214D /* rlp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rlp.m; sourceTree = "<group>"; };
+		E32218A1270442940036214D /* NSData+RLP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+RLP.h"; sourceTree = "<group>"; };
+		E32218A2270442940036214D /* NSData+RLP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+RLP.m"; sourceTree = "<group>"; };
 		E33A278F2604AA8D004CBE35 /* NerveTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NerveTools.h; sourceTree = "<group>"; };
 		E33A27902604AAB9004CBE35 /* NerveTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NerveTools.m; sourceTree = "<group>"; };
 		E3407E5726034DB1001D5BCB /* tommath_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tommath_private.h; sourceTree = "<group>"; };
@@ -643,6 +649,17 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
+		E322189E270442750036214D /* rlp */ = {
+			isa = PBXGroup;
+			children = (
+				E32218A1270442940036214D /* NSData+RLP.h */,
+				E32218A2270442940036214D /* NSData+RLP.m */,
+				E322189F270442940036214D /* rlp.h */,
+				E32218A0270442940036214D /* rlp.m */,
+			);
+			path = rlp;
+			sourceTree = "<group>";
+		};
 		E33A278E2604A9C6004CBE35 /* NerveTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -655,6 +672,7 @@
 		E3407E2D26034DB1001D5BCB /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				E322189E270442750036214D /* rlp */,
 				E3407E2E26034DB1001D5BCB /* trezor-crypto */,
 				E3407E5626034DB1001D5BCB /* libtommath-1.0 */,
 			);
@@ -944,6 +962,7 @@
 				E3AAEA2B269B452D00E3A702 /* groestl.c in Sources */,
 				E3AAE9FB269B452D00E3A702 /* rfc7539.c in Sources */,
 				E3407E8126034DB1001D5BCB /* RegEx.m in Sources */,
+				E32218A3270442950036214D /* rlp.m in Sources */,
 				6504A37C2462B75400CD20BB /* ViewController.m in Sources */,
 				E3AAEA10269B452D00E3A702 /* blake2s.c in Sources */,
 				6542BF3B24B2DC41000520CF /* CVBTCWallet.m in Sources */,
@@ -1027,6 +1046,7 @@
 				E3AAEA0D269B452D00E3A702 /* aes_modes.c in Sources */,
 				6504A4E52463AADC00CD20BB /* NSString+CVETH.m in Sources */,
 				E3AAEA33269B452D00E3A702 /* ecdsa.c in Sources */,
+				E32218A4270442950036214D /* NSData+RLP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

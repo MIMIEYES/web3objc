@@ -26,10 +26,13 @@
         NSMutableDictionary *_abiDic = [[NSMutableDictionary alloc] init];
         for (NSDictionary *abi in _abi) {
             NSString *functionStr = [NSString stringWithFormat:@"%@(", [abi valueForKey:@"name"]];
-            for (NSDictionary *input in [abi valueForKey:@"inputs"]) {
+            NSArray *inputsArray = [abi valueForKey:@"inputs"];
+            for (NSDictionary *input in inputsArray) {
                 functionStr = [NSString stringWithFormat:@"%@%@,", functionStr, [input valueForKey:@"type"]];
             }
-            functionStr = [functionStr substringWithRange:NSMakeRange(0, functionStr.length - 1)];
+            if (inputsArray.count > 0) {
+                functionStr = [functionStr substringWithRange:NSMakeRange(0, functionStr.length - 1)];
+            }
             functionStr = [NSString stringWithFormat:@"%@)", functionStr];
             NSString *functionSelector = [CVETHABIArgument functionsSelectorHash:functionStr];
             [_abiDic setValue:abi forKey:functionSelector];

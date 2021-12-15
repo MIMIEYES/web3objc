@@ -107,12 +107,12 @@ static NSString *const HASH_MESSAGE_PREFIX = @"\x19""Ethereum Signed Message:\n"
                       numberStyle:NSNumberFormatterNoStyle];
     vStr = [vStr hexFromDec];
     vStr = [vStr hexUp];
-    vStr = [vStr hexTrim];
+    vStr = [vStr trim];
     
     NSString *rStr = [[NSData dataWithBytes:&tempSignatureData.bytes[0] length:32] dataDirectString];
-    rStr = [rStr hexTrim];
+    rStr = [rStr trim];
     NSString *sStr = [[NSData dataWithBytes:&tempSignatureData.bytes[32] length:32] dataDirectString];
-    sStr = [sStr hexTrim];
+    sStr = [sStr trim];
     
     NSString *signature = [NSString stringWithFormat:@"%@%@%@", rStr, sStr, vStr];
     return @{@"message":_message, @"messageHash":hashMessage, @"signature":[signature addPrefix0x], @"v":[vStr addPrefix0x], @"r":[rStr addPrefix0x], @"s":[sStr addPrefix0x]};

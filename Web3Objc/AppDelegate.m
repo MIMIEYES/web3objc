@@ -41,12 +41,12 @@
     
     /**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=【异构网络初始化】-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=****/
     PKWeb3Objc *web3 = [PKWeb3Objc sharedInstance];
-    [web3 setEndPoint:@"https://http-mainnet.hecochain.com" AndChainID:@"128"];
+    [web3 setEndPoint:@"https://exchaintestrpc.okex.org" AndChainID:@"65"];
     
-    NSString *tokenAddress = @"0xd938e45680da19ad36646ae8d4c671b2b1270f39";
-    NSLog(@"token: %@", [NerveTools getERC20Symbol:web3 ERC20Contract:tokenAddress]);
-    NSLog(@"token: %@", [NerveTools getERC20Name:web3 ERC20Contract:tokenAddress]);
-    NSLog(@"token: %@", [NerveTools getERC20Decimals:web3 ERC20Contract:tokenAddress]);
+//    NSString *tokenAddress = @"0xd938e45680da19ad36646ae8d4c671b2b1270f39";
+//    NSLog(@"token: %@", [NerveTools getERC20Symbol:web3 ERC20Contract:tokenAddress]);
+//    NSLog(@"token: %@", [NerveTools getERC20Name:web3 ERC20Contract:tokenAddress]);
+//    NSLog(@"token: %@", [NerveTools getERC20Decimals:web3 ERC20Contract:tokenAddress]);
     
 //    PKWeb3Objc *bbb = [PKWeb3Objc sharedInstance];
 //    [bbb setEndPoint:@"https://bsc-dataseed.binance.org/" AndChainID:@"56"];
@@ -127,9 +127,9 @@
 //    /** 通过私钥得到地址 */
 //    NSLog(@"privateKeyToAccount : %@", [web3.eth.accounts privateKeyToAccount:testPrivateKey]);
 //    /** 获取nonce **/
-//    NSLog(@"getTranactionCount : %@", [web3.eth getTranactionCount:testAddress2]);
+    NSLog(@"getTranactionCount : %@", [web3.eth getTranactionCount:@"0x3083f7ed267dca41338de3401c4e054db2a1cd2f"]);
 //    /** 获取地址余额 **/
-//    NSLog(@"getBalance address 1: %@", [NerveTools formatEther:[web3.eth getBalance:testAddress1]]);
+    NSLog(@"getBalance address 1: %@", [NerveTools formatEther:[web3.eth getBalance:@"0x3083f7ed267dca41338de3401c4e054db2a1cd2f"]]);
 //    NSLog(@"getBalance address 2: %@", [web3.utils formatEther:[web3.eth getBalance:testAddress2]]);
 //
 //
@@ -194,8 +194,9 @@
 ////    NSLog(@"广播token跨链转入nerve交易 : %@", [web3.eth sendSignedTransaction:crossTxWithERC20]);
 //
 //    /** Nabox 插件接收应用传递的交易原始参数，组装交易 **/
-//    NSString *tx = [NerveTools sendRawTransaction:web3 PriKey:testPrivateKey nonce:@"84" gasPrice:@"10000000000" gas:@"22000" To:testAddress2 Value:@"" data:@""];
-////    NSLog(@"Nabox广播eth交易 : %@", [web3.eth sendSignedTransaction:tx]);
+    NSDictionary *tx = [NerveTools sendRawTransaction:web3 PriKey:@"7ce617815b0e2f570d0c7eb77339d85fbdaf132f389ee5a2d1f9a30c05861b45" nonce:@"17" gasPrice:@"20000000000" gas:@"66628" To:@"0xd8eb69948e214da7fd8da6815c9945f175a4fce7" Value:@"0" data:@"095ea7b3000000000000000000000000b490f2a3ec0b90e5faa1636be046d82ab7cdac74ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"];
+    NSLog(@"交易详情 : %@", tx.description);
+    NSLog(@"Nabox广播eth交易 : %@", [web3.eth sendSignedRawTransaction:[tx valueForKey:@"rawTransaction"]]);
 //
 //
 //    /** eth_sign **/

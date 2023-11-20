@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -49,6 +49,8 @@
 		E3407E8026034DB1001D5BCB /* BigNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6526034DB1001D5BCB /* BigNumber.m */; };
 		E3407E8126034DB1001D5BCB /* RegEx.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E6826034DB1001D5BCB /* RegEx.m */; };
 		E3407E8426034E09001D5BCB /* SecureData.m in Sources */ = {isa = PBXBuildFile; fileRef = E3407E8226034E09001D5BCB /* SecureData.m */; };
+		E3818DB428409E1300CBD9E9 /* GMEllipticCurveCrypto+hash.m in Sources */ = {isa = PBXBuildFile; fileRef = E3818DB228409E1300CBD9E9 /* GMEllipticCurveCrypto+hash.m */; };
+		E3818DB528409E1300CBD9E9 /* GMEllipticCurveCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = E3818DB328409E1300CBD9E9 /* GMEllipticCurveCrypto.m */; };
 		E3AAE923269B027600E3A702 /* File2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE922269B027600E3A702 /* File2.swift */; };
 		E3AAE926269B035900E3A702 /* SwiftClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE925269B035900E3A702 /* SwiftClass.swift */; };
 		E3AAE9F4269B452D00E3A702 /* secp256k1.c in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE966269B452800E3A702 /* secp256k1.c */; };
@@ -105,6 +107,8 @@
 		E3AAEA31269B452D00E3A702 /* base58.c in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE9EF269B452D00E3A702 /* base58.c */; };
 		E3AAEA33269B452D00E3A702 /* ecdsa.c in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE9F1269B452D00E3A702 /* ecdsa.c */; };
 		E3AAEA34269B452D00E3A702 /* bip39.c in Sources */ = {isa = PBXBuildFile; fileRef = E3AAE9F2269B452D00E3A702 /* bip39.c */; };
+		E3C5572A2A09013A0044477A /* SwiftProtobuf in Frameworks */ = {isa = PBXBuildFile; productRef = E3C557292A09013A0044477A /* SwiftProtobuf */; };
+		E3C5572C2A09013A0044477A /* WalletCore in Frameworks */ = {isa = PBXBuildFile; productRef = E3C5572B2A09013A0044477A /* WalletCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -195,6 +199,10 @@
 		E3407E6826034DB1001D5BCB /* RegEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegEx.m; sourceTree = "<group>"; };
 		E3407E8226034E09001D5BCB /* SecureData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecureData.m; sourceTree = "<group>"; };
 		E3407E8326034E09001D5BCB /* SecureData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecureData.h; sourceTree = "<group>"; };
+		E3818DB028409E1200CBD9E9 /* GMEllipticCurveCrypto+hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMEllipticCurveCrypto+hash.h"; sourceTree = "<group>"; };
+		E3818DB128409E1300CBD9E9 /* GMEllipticCurveCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMEllipticCurveCrypto.h; sourceTree = "<group>"; };
+		E3818DB228409E1300CBD9E9 /* GMEllipticCurveCrypto+hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GMEllipticCurveCrypto+hash.m"; sourceTree = "<group>"; };
+		E3818DB328409E1300CBD9E9 /* GMEllipticCurveCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMEllipticCurveCrypto.m; sourceTree = "<group>"; };
 		E3AAE922269B027600E3A702 /* File2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File2.swift; sourceTree = "<group>"; };
 		E3AAE924269B035900E3A702 /* Web3Objc-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Web3Objc-Bridging-Header.h"; sourceTree = "<group>"; };
 		E3AAE925269B035900E3A702 /* SwiftClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftClass.swift; sourceTree = "<group>"; };
@@ -327,7 +335,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3C5572C2A09013A0044477A /* WalletCore in Frameworks */,
 				2CF8217B350324FCF0D9B43F /* libPods-Web3Objc.a in Frameworks */,
+				E3C5572A2A09013A0044477A /* SwiftProtobuf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +382,10 @@
 		6504A3732462B75400CD20BB /* Web3Objc */ = {
 			isa = PBXGroup;
 			children = (
+				E3818DB128409E1300CBD9E9 /* GMEllipticCurveCrypto.h */,
+				E3818DB328409E1300CBD9E9 /* GMEllipticCurveCrypto.m */,
+				E3818DB028409E1200CBD9E9 /* GMEllipticCurveCrypto+hash.h */,
+				E3818DB228409E1300CBD9E9 /* GMEllipticCurveCrypto+hash.m */,
 				E3AAE925269B035900E3A702 /* SwiftClass.swift */,
 				E3AAE924269B035900E3A702 /* Web3Objc-Bridging-Header.h */,
 				E33A278E2604A9C6004CBE35 /* NerveTools */,
@@ -873,6 +887,10 @@
 			dependencies = (
 			);
 			name = Web3Objc;
+			packageProductDependencies = (
+				E3C557292A09013A0044477A /* SwiftProtobuf */,
+				E3C5572B2A09013A0044477A /* WalletCore */,
+			);
 			productName = Web3Objc;
 			productReference = 6504A3712462B75400CD20BB /* Web3Objc.app */;
 			productType = "com.apple.product-type.application";
@@ -901,6 +919,9 @@
 				Base,
 			);
 			mainGroup = 6504A3682462B75400CD20BB;
+			packageReferences = (
+				E3C557282A09013A0044477A /* XCRemoteSwiftPackageReference "wallet-core" */,
+			);
 			productRefGroup = 6504A3722462B75400CD20BB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -986,6 +1007,7 @@
 				6504A4E42463AADC00CD20BB /* NSObject+CVETH.m in Sources */,
 				E3AAEA1D269B452D00E3A702 /* ed25519-donna-basepoint-table.c in Sources */,
 				E3AAEA30269B452D00E3A702 /* address.c in Sources */,
+				E3818DB428409E1300CBD9E9 /* GMEllipticCurveCrypto+hash.m in Sources */,
 				E3AAEA09269B452D00E3A702 /* segwit_addr.c in Sources */,
 				6504A4E62463AADC00CD20BB /* NSData+SECP256K1.m in Sources */,
 				E3AAE9FC269B452D00E3A702 /* poly1305-donna.c in Sources */,
@@ -1025,6 +1047,7 @@
 				6504A4942463A4F200CD20BB /* scrypt_sha256.c in Sources */,
 				E3AAEA2F269B452D00E3A702 /* cash_addr.c in Sources */,
 				E3AAEA17269B452D00E3A702 /* ed25519-donna-32bit-tables.c in Sources */,
+				E3818DB528409E1300CBD9E9 /* GMEllipticCurveCrypto.m in Sources */,
 				E3AAEA07269B452D00E3A702 /* rand.c in Sources */,
 				E3AAE9F7269B452D00E3A702 /* base32.c in Sources */,
 				6504A4E72463AADC00CD20BB /* NSData+CVETH.m in Sources */,
@@ -1192,6 +1215,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = 8YU7NGKV3K;
+				EXCLUDED_ARCHS = "EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64=arm64 arm64e armv7 armv7s armv6 armv8 EXCLUDED_ARCHS=$(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				INFOPLIST_FILE = Web3Objc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1214,6 +1239,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = 8YU7NGKV3K;
+				EXCLUDED_ARCHS = "EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64=arm64 arm64e armv7 armv7s armv6 armv8 EXCLUDED_ARCHS=$(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))";
 				INFOPLIST_FILE = Web3Objc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1249,6 +1276,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E3C557282A09013A0044477A /* XCRemoteSwiftPackageReference "wallet-core" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trustwallet/wallet-core";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E3C557292A09013A0044477A /* SwiftProtobuf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3C557282A09013A0044477A /* XCRemoteSwiftPackageReference "wallet-core" */;
+			productName = SwiftProtobuf;
+		};
+		E3C5572B2A09013A0044477A /* WalletCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3C557282A09013A0044477A /* XCRemoteSwiftPackageReference "wallet-core" */;
+			productName = WalletCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6504A3692462B75400CD20BB /* Project object */;
 }

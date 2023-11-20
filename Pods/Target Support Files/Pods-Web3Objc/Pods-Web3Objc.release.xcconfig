@@ -1,16 +1,14 @@
-ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/CBSecp256k1/CBSecp256k1/secp256k1" "${PODS_ROOT}/TrustWalletCore" "${PODS_XCFRAMEWORKS_BUILD_DIR}/WalletCoreCommon"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/CBSecp256k1/CBSecp256k1/secp256k1"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CBSecp256k1" "${PODS_ROOT}/Headers/Public/CoreBitcoin" "${PODS_ROOT}/Headers/Public/ISO8601DateFormatter" "${PODS_ROOT}/Headers/Public/OpenSSL-Universal" "${PODS_ROOT}/Headers/Public/TrustWalletCore" "${PODS_ROOT}/Headers/Public/secp256k1_ios"
-LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CBSecp256k1" "${PODS_CONFIGURATION_BUILD_DIR}/CoreBitcoin" "${PODS_CONFIGURATION_BUILD_DIR}/ISO8601DateFormatter" "${PODS_CONFIGURATION_BUILD_DIR}/SwiftProtobuf" "${PODS_CONFIGURATION_BUILD_DIR}/TrustWalletCore" "${PODS_CONFIGURATION_BUILD_DIR}/secp256k1_ios" "${PODS_ROOT}/OpenSSL-Universal/lib-ios"
-OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/SwiftProtobuf/SwiftProtobuf.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/TrustWalletCore/WalletCore.modulemap" -fmodule-map-file="${PODS_ROOT}/Headers/Public/secp256k1_ios/secp256k1_ios.modulemap"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"CBSecp256k1" -l"CoreBitcoin" -l"ISO8601DateFormatter" -l"SwiftProtobuf" -l"TrustWalletCore" -l"c++" -l"crypto" -l"secp256k1_ios" -l"ssl" -framework "Foundation" -framework "UIKit" -framework "WalletCoreCommon" -framework "secp256k1"
-OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/SwiftProtobuf/SwiftProtobuf.modulemap" -Xcc -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/TrustWalletCore/WalletCore.modulemap" -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/secp256k1_ios/secp256k1_ios.modulemap"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CBSecp256k1" "${PODS_ROOT}/Headers/Public/CoreBitcoin" "${PODS_ROOT}/Headers/Public/ISO8601DateFormatter" "${PODS_ROOT}/Headers/Public/OpenSSL-Universal" "${PODS_ROOT}/Headers/Public/libsodium" "${PODS_ROOT}/Headers/Public/secp256k1_ios" "$(PODS_ROOT)/libsodium/src/libsodium/include/sodium" "$(PODS_ROOT)/libsodium/src/libsodium/include"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/CBSecp256k1" "${PODS_CONFIGURATION_BUILD_DIR}/CoreBitcoin" "${PODS_CONFIGURATION_BUILD_DIR}/ISO8601DateFormatter" "${PODS_CONFIGURATION_BUILD_DIR}/libsodium" "${PODS_CONFIGURATION_BUILD_DIR}/secp256k1_ios" "${PODS_ROOT}/OpenSSL-Universal/lib-ios"
+OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_ROOT}/Headers/Public/secp256k1_ios/secp256k1_ios.modulemap" -DNATIVE_LITTLE_ENDIAN=1 -DHAVE_MADVISE -DHAVE_MMAP -DHAVE_MPROTECT -DHAVE_POSIX_MEMALIGN -DHAVE_WEAK_SYMBOLS
+OTHER_LDFLAGS = $(inherited) -ObjC -l"CBSecp256k1" -l"CoreBitcoin" -l"ISO8601DateFormatter" -l"crypto" -l"libsodium" -l"secp256k1_ios" -l"ssl" -framework "Foundation" -framework "UIKit" -framework "secp256k1"
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS -Xcc -fmodule-map-file="${PODS_ROOT}/Headers/Public/secp256k1_ios/secp256k1_ios.modulemap"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods
 PODS_XCFRAMEWORKS_BUILD_DIR = $(PODS_CONFIGURATION_BUILD_DIR)/XCFrameworkIntermediates
-SWIFT_INCLUDE_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/SwiftProtobuf" "${PODS_CONFIGURATION_BUILD_DIR}/TrustWalletCore"
 USE_RECURSIVE_SCRIPT_INPUTS_IN_SCRIPT_PHASES = YES

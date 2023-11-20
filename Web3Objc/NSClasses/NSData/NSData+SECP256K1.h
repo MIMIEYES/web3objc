@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSData *) signWithPrivateKeyData:(NSData *)privateKeyData;
 - (NSData *) getPubKeyDataFromMessageWithSig:(NSData *)_sig;
 - (NSData *) signDataEncodeToDER:(NSData *)privateKeyData;
+//- (NSData *) deriveSharedSecret:(NSData *)privateKeyData OtherPubkey: (NSData *)pubKeyData;
 //- (int)verifySigningWithPublicKeyData:(NSData *)publicKeyData;
 @end
 

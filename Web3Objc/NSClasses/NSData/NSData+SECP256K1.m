@@ -115,6 +115,26 @@
     
     return resultPubKey;
 }
+
+//- (NSData *) deriveSharedSecret:(NSData *)privateKeyData OtherPubkey: (NSData *)otherPubKeyData;
+//{
+//    secp256k1_context *context = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY | SECP256K1_CONTEXT_SIGN);
+//    
+//    const unsigned char *privBytes = (const unsigned char *)privateKeyData.bytes;
+//    const unsigned char *pubKey = (const unsigned char *)otherPubKeyData.bytes;
+//    secp256k1_pubkey pKey;
+//    int pubResult = secp256k1_ec_pubkey_parse(context, &pKey, pubKey, otherPubKeyData.length);
+//    if (pubResult != 1) return nil;
+//    unsigned char *result = malloc(32);
+//    int resultpk = secp256k1_ecdh(context, result, &pKey, privBytes);
+//    if (resultpk != 1) return nil;
+//    secp256k1_context_destroy(context);
+//    NSMutableData *resultData = [[NSMutableData alloc] init];
+//    [resultData appendBytes:result length:sizeof(unsigned char) * 32];
+//    free(result);
+//    return resultData;
+//}
+
 //- (int)verifySigningWithPublicKeyData:(NSData *)publicKeyData
 //{
 //    secp256k1_context *context = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);

@@ -62,7 +62,7 @@ int segwit_addr_decode(int *ver, uint8_t *prog, size_t *prog_len,
  *  Returns 1 if successful.
  */
 int bech32_encode(char *output, const char *hrp, const uint8_t *data,
-                  size_t data_len);
+                  size_t data_len, int bech32m);
 
 /** Decode a Bech32 string
  *

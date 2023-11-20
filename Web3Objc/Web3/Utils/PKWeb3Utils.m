@@ -31,6 +31,10 @@ static NSUInteger etherDecimals = 18;
 {
     return [[_string keccak256HashString] addPrefix0x];
 }
+-(NSString *)sha512:(NSString *)_string
+{
+    return [[_string sha512HashString] addPrefix0x];
+}
 -(NSString *)keccak256:(NSString *)_string
 {
     return [[_string keccak256HashString] addPrefix0x];

@@ -162,6 +162,13 @@ static const int8_t base58map[] = {
     NSString *hashString = [hashData dataDirectString];
     return hashString;
 }
+-(NSString *)sha512HashString
+{
+    NSData *encodData = [self dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *hashData = [encodData sha512];
+    NSString *hashString = [hashData dataDirectString];
+    return hashString;
+}
 -(NSString *)trim
 {
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];

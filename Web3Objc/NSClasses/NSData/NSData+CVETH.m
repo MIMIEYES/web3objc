@@ -51,6 +51,18 @@ static const UniChar base58chars[] = {
     return [NSData dataWithBytes:digest length:SHA3_256_DIGEST_LENGTH];
     
 }
+-(NSData *)sha512
+{
+    uint8_t *digest = malloc(sizeof(uint8_t) * SHA3_512_DIGEST_LENGTH);
+    
+    SHA512_CTX ctx;
+    sha512_Init(&ctx);
+    sha512_Update(&ctx, self.bytes, self.length);
+    sha512_Final(&ctx, digest);
+    
+    return [NSData dataWithBytes:digest length:SHA3_512_DIGEST_LENGTH];
+    
+}
 -(NSString *)base58
 {
     size_t i, z = 0;

@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PKWeb3Utils : NSObject
 -(NSString *)randomHex:(NSInteger)_size;
 -(NSString *)sha3:(NSString *)_string;
+-(NSString *)sha512:(NSString *)_string;
 -(NSString *)keccak256:(NSString *)_string;
 -(NSString *)toChecksumAddress:(NSString *)_address;
 -(BOOL)checkAddressChecksum:(NSString *)_address;

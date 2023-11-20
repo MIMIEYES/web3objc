@@ -195,6 +195,54 @@ int secp256k1_ec_pubkey_serialize(const secp256k1_context* ctx, unsigned char *o
     return ret;
 }
 
+void secp256k1_fe_get_hex(char *r, const secp256k1_fe *a)
+{
+    unsigned char tmp[32];
+    secp256k1_fe b = *a;
+    secp256k1_fe_normalize(&b);
+    secp256k1_fe_get_b32(tmp, &b);
+    for (int i=0; i<32; i++)
+    {
+        static const char *c = "0123456789ABCDEF";
+        r[2*i]   = c[(tmp[i] >> 4) & 0xF];
+        r[2*i+1] = c[(tmp[i]) & 0xF];
+    }
+    r[64] = 0x00;
+}
+
+int secp256k1_abcd(const unsigned char *pubkey_bytes) {
+    // 初始化secp256k1上下文
+    secp256k1_context *ctx = secp256k1_context_create(SECP256K1_CONTEXT_VERIFY | SECP256K1_CONTEXT_SIGN);
+
+    // 解析公钥
+    secp256k1_pubkey pubkey;
+    if (!secp256k1_ec_pubkey_parse(ctx, &pubkey, pubkey_bytes, 65)) {
+        printf("Error: Failed to parse public key\n");
+        return -1;
+    }
+    // 获取公钥的坐标
+    secp256k1_ge ge_pubkey;
+    if (!secp256k1_pubkey_load(ctx, &ge_pubkey, &pubkey)) {
+        printf("Error: Failed to load public key\n");
+        return -1;
+    }
+
+    // 将坐标转换为十六进制字符串
+    char x_str[65], y_str[65];
+    secp256k1_fe_get_hex(x_str, &ge_pubkey.x);
+    secp256k1_fe_get_hex(y_str, &ge_pubkey.y);
+
+    // 输出坐标
+    printf("Public key coordinates:\n");
+    printf("x = %s\n", x_str);
+    printf("y = %s\n", y_str);
+
+    // 释放上下文
+    secp256k1_context_destroy(ctx);
+
+    return 0;
+}
+
 static void secp256k1_ecdsa_signature_load(const secp256k1_context* ctx, secp256k1_scalar* r, secp256k1_scalar* s, const secp256k1_ecdsa_signature* sig) {
     (void)ctx;
     if (sizeof(secp256k1_scalar) == 32) {

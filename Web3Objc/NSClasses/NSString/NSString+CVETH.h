@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)removePrefix0x;
 -(NSString *)addPrefix0x;
 -(NSString *)keccak256HashString;
+-(NSString *)sha512HashString;
 - (BOOL) isAllDigits;
 -(NSString *)trim;
 -(NSData *)base58ToData;

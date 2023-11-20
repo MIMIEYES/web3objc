@@ -91,12 +91,24 @@
     free(publicKey);
     return publicKeyData;
 }
++ (NSData *) uncompressPublicKey:(NSData *)compressPublicKey {
+    uint8_t *publicKey = malloc(sizeof(uint8_t) * 65);
+    ecdsa_uncompress_pubkey(&secp256k1, compressPublicKey.bytes, publicKey);
+    NSData *publicKeyData = [NSData dataWithBytes:publicKey length:sizeof(uint8_t) * 65];
+    memset(publicKey, 0, sizeof(uint8_t) * 65);
+    free(publicKey);
+    return publicKeyData;
+}
 +(NSDictionary *)encryptMessage:(NSData *)_message WithPubKey:(NSData *)_pubkey
 {
-    NSData *ephemPrivateKeyData = [[self getRandomKeyByBytes:32] parseHexData];
-    return [self encryptMessage:_message WithPubKey:_pubkey WithSigner:ephemPrivateKeyData];
+    return [self encryptMessage:_message WithPubKey:_pubkey WithIV:nil];
 }
-+(NSDictionary *)encryptMessage:(NSData *)_message WithPubKey:(NSData *)_pubkey WithSigner:(NSData *)_m_privkey;
++(NSDictionary *)encryptMessage:(NSData *)_message WithPubKey:(NSData *)_pubkey WithIV:(nullable NSData *)_iv;
+{
+    NSData *ephemPrivateKeyData = [[self getRandomKeyByBytes:32] parseHexData];
+    return [self encryptMessage:_message WithPubKey:_pubkey WithSigner:ephemPrivateKeyData WithIV:_iv];
+}
++(NSDictionary *)encryptMessage:(NSData *)_message WithPubKey:(NSData *)_pubkey WithSigner:(NSData *)_m_privkey WithIV:(nullable NSData *)_iv;
 {
     if ([_message length] == 0) {
       return nil;
@@ -106,7 +118,7 @@
     NSData *macKey = nil;
     
     /* Public data */
-    NSData *ivData = nil;
+    NSData *ivData = _iv;
     NSData *ephemPublicKeyData = nil;
     NSData *cipherData = nil;
     NSData *macData = nil;
@@ -117,7 +129,9 @@
     ephemPublicKeyData = [self _publicKeyFromPrivateKey:ephemPrivateKeyData];
     
     //Preparing initialization vector
-    ivData = [[self getRandomKeyByBytes:AES_BLOCK_SIZE] parseHexData];
+    if (ivData == nil) {
+        ivData = [[self getRandomKeyByBytes:AES_BLOCK_SIZE] parseHexData];
+    }
     
     //Preparing encryption key & mac key
     
@@ -129,6 +143,7 @@
     
     memset(sessionKey, 0, sizeof(uint8_t) * 65);
     free(sessionKey);
+//    NSLog(@"Shared Secret : %@", [px dataDirectString]);
     
     /* SHA512 */
     uint8_t *digest = malloc(sizeof(uint8_t) * SHA512_DIGEST_LENGTH);
@@ -136,6 +151,7 @@
     NSData *sha512Data = [NSData dataWithBytes:digest length:sizeof(uint8_t) * SHA512_DIGEST_LENGTH];
     memset(digest, 0, sizeof(uint8_t) * SHA512_DIGEST_LENGTH);
     free(digest);
+//    NSLog(@"Shared Secret SHA512: %@", [sha512Data dataDirectString]);
     
     /* Keys */
     encryptionKey = [sha512Data subdataWithRange:NSMakeRange(0, SHA512_DIGEST_LENGTH / 2)];
@@ -144,6 +160,10 @@
     //Encryption
     /* Checking message alignment */
     NSData *messageData = [self _addPaddingIfNeeded:_message blockSize:AES_BLOCK_SIZE];
+    
+//    NSLog(@"Shared Secret messageData: %@", [messageData dataDirectString]);
+//    NSLog(@"Shared Secret encryptionKey: %@", [encryptionKey dataDirectString]);
+//    NSLog(@"Shared Secret macKey: %@", [macKey dataDirectString]);
     
     //buffers
     uint8_t *buffer = malloc(sizeof(uint8_t) * [messageData length]);
@@ -156,6 +176,8 @@
     aes_cbc_encrypt(messageData.bytes, buffer, (int)[messageData length], iv, &context);
     
     cipherData = [NSData dataWithBytes:buffer length:[messageData length]];
+    
+//    NSLog(@"Shared Secret cipherData: %@", [cipherData dataDirectString]);
     
     memset(buffer, 0, sizeof(uint8_t) * [messageData length]);
     memset(iv, 0, sizeof(uint8_t) * AES_BLOCK_SIZE);
@@ -175,6 +197,8 @@
     
     /* HMAC */
     macData = [NSData dataWithBytes:hmac length:sizeof(uint8_t) * SHA256_DIGEST_LENGTH];
+    
+//    NSLog(@"Shared Secret macData: %@", [macData dataDirectString]);
     
     memset(hmac, 0, sizeof(uint8_t) * SHA256_DIGEST_LENGTH);
     free(hmac);
@@ -266,6 +290,20 @@
     
     return decryptedData;
 }
+
++(NSString *)sha512:(NSData *)_message;
+{
+    /* SHA512 */
+    uint8_t *digest = malloc(sizeof(uint8_t) * SHA512_DIGEST_LENGTH);
+    sha512_Raw(_message.bytes, sizeof(uint8_t) * SHA256_DIGEST_LENGTH, digest);
+    NSData *sha512Data = [NSData dataWithBytes:digest length:sizeof(uint8_t) * SHA512_DIGEST_LENGTH];
+    memset(digest, 0, sizeof(uint8_t) * SHA512_DIGEST_LENGTH);
+    free(digest);
+//    NSLog(@"Shared Secret SHA512: %@", [sha512Data dataDirectString]);
+    return [sha512Data dataDirectString];
+    
+}
+
 + (NSData *) _addPaddingIfNeeded:(NSData *)data blockSize:(NSUInteger)blockSize {
   NSMutableData *mutableData = [data mutableCopy];
   

@@ -4,41 +4,33 @@ PODS:
     - ISO8601DateFormatter
     - OpenSSL-Universal (= 1.0.1.16)
   - ISO8601DateFormatter (0.8)
+  - libsodium (1.0.12)
   - OpenSSL-Universal (1.0.1.16)
   - secp256k1_ios (0.1.3)
-  - SwiftProtobuf (1.17.0)
-  - TrustWalletCore (2.6.17):
-    - TrustWalletCore/Core (= 2.6.17)
-  - TrustWalletCore/Core (2.6.17):
-    - TrustWalletCore/Types
-  - TrustWalletCore/Types (2.6.17):
-    - SwiftProtobuf
 
 DEPENDENCIES:
   - CBSecp256k1
   - CoreBitcoin
+  - libsodium
   - secp256k1_ios
-  - TrustWalletCore
 
 SPEC REPOS:
   trunk:
     - CBSecp256k1
     - CoreBitcoin
     - ISO8601DateFormatter
+    - libsodium
     - OpenSSL-Universal
     - secp256k1_ios
-    - SwiftProtobuf
-    - TrustWalletCore
 
 SPEC CHECKSUMS:
   CBSecp256k1: d8a1c651b1e5dd1c35867e968ab4e7fd2430e4de
   CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
+  libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
   OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   secp256k1_ios: ac9ef04e761f43c58012b28548afa91493761f17
-  SwiftProtobuf: 9c85136c6ba74b0a1b84279dbf0f6db8efb714e0
-  TrustWalletCore: 48472eb39dab56bc5a94e626b24160c88bfb1ebf
 
-PODFILE CHECKSUM: 45c61b93891312e0cdc4e1188e25569c78f974ca
+PODFILE CHECKSUM: a30fe308a2807206d92a24495484c3779a077b9b
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

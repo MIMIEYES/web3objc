@@ -13,6 +13,8 @@
 
 + (NSString *)sendEth: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey To: (NSString *)_to Value: (NSString *)_value;
 
++ (NSString *)sendERC721: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey ERC721Contract: (NSString *)_contract To: (NSString *)_to TokenId: (NSString *)_tokenId HexData: (NSString *)_hexData;
+
 + (NSString *)sendERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value;
 
 + (NSString *)approveERC20: (PKWeb3Objc *) web3 PriKey: (NSString *)_priKey ERC20Contract: (NSString *)_contract ERC20Decimals: (NSUInteger)_decimals To: (NSString *)_to Value: (NSString *)_value;
@@ -60,6 +62,24 @@
 /// token资产的精度
 + (NSString *)getERC20Decimals: (PKWeb3Objc *) web3 ERC20Contract: (NSString *)_contract;
 
+///MARK: - ECDH 密钥协商
+/// 椭圆曲线 Diffie-Hellman 密钥协商（ECDH），返回 32 字节 16 进制编码格式密钥
+/// @param publicKey UserA的公钥
+/// @param otherPrivateKey UserB的私钥
++ (NSString *)computeECDH:(NSString *) publicKey privateKey:(NSString *)otherPrivateKey;
+
+///MARK: - ECIES 加密
+/// @param _message 明文消息
+/// @param _pubkey 用户私钥
++(NSString *)encryptMessage:(NSString *)_message WithPubKey:(NSString *)_pubkey;
+
+///MARK: - ECIES 解密
+/// @param _encMessage 加密消息
+/// @param _privkey 用户私钥
++(NSString *)decryptMessage:(NSString *)_encMessage WithPrivKey:(NSString *)_privkey;
+
++(NSString *)calcBtcPriByEvmPri:(NSString *)evmPrikey WithMainnet:(BOOL)mainnet;
++(NSString *)calcEvmPriByBtcPri:(NSString *)btcKey WithMainnet:(BOOL)mainnet;
 @end
 
 

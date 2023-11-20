@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSString *)dataDirectString;
 -(NSData *)keccak256;
 -(NSData *)sha256;
+-(NSData *)sha512;
 -(NSString *)base58;
 @end
 

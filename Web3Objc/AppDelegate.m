@@ -199,8 +199,8 @@
     NSData *y = [uncompressBobData subdataWithRange:NSMakeRange(33, 32)];
     NSString *xHex = [x dataDirectString];
     NSString *yHex = [y dataDirectString];
-    NSString *xStr = [BigNumber bigNumberWithData:x];
-    NSString *yStr = [BigNumber bigNumberWithData:y];
+    NSString *xStr = [[BigNumber bigNumberWithData:x] decimalString];
+    NSString *yStr = [[BigNumber bigNumberWithData:y] decimalString];
     NSLog(@"xStr: %@", xStr);
     NSLog(@"yStr: %@", yStr);
     NSLog(@"xHex: %@", xHex);
